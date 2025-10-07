@@ -8,6 +8,8 @@ namespace Domain.Entidades;
 public class Marca
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
-    public string Name { get; private set; } = null!;
+    public string Nombre { get; private set; } = null!;
     public virtual ICollection<Vehiculo> Vehiculos { get; set; } = new HashSet<Vehiculo>();
+    public Marca(string nombre)
+    { Nombre = nombre; }
 }
