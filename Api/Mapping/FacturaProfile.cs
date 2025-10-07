@@ -15,7 +15,6 @@ public class FacturaProfile : Profile
 
         CreateMap<CreateFacturaDto, Factura>()
             .ConstructUsing(src => new Factura(
-                src.SubTotal,
                 src.Impuestos,
                 src.Total,
                 src.OrdenServicioId

@@ -17,7 +17,6 @@ public class DetalleOrdenProfile : Profile
             .ConstructUsing(src => new DetalleOrden(
                 src.Cantidad,
                 src.CostoUnitario,
-                src.Subtotal,
                 src.OrdenServicioId,
                 src.RespuestaId
             ));
