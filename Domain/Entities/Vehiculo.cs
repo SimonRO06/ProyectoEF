@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
 
-namespace Domain.Entidades;
+namespace Domain.Entities;
 
 public class Vehiculo
 {
