@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Api.Helpers;
+using Infrastructure.Persistence;
+
+namespace Api.Extensions;
+public static class DbSeederExtensions
+{
+    public static async Task SeedRolesAsync(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var existingNames = await db.Rols.Select(r => r.Name).ToListAsync();
+        var targetNames = Enum.GetNames(typeof(UserAuthorization.Roles));
+
+        var toAdd = targetNames
+            .Except(existingNames, StringComparer.OrdinalIgnoreCase)
+            .Select(n => new Rol
+            {
+                Name = n,
+                Description = $"{n} role"
+            })
+            .ToList();
+
+        if (toAdd.Count > 0)
+        {
+            db.Rols.AddRange(toAdd);
+            await db.SaveChangesAsync();
+        }
+    }
+}
