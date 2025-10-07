@@ -14,7 +14,7 @@ public class Factura
     
     public Guid OrdenServicioId { get; set; }
     public virtual OrdenServicio? OrdenServicio { get; set; }
-
+    public virtual ICollection<Pago> Pagos { get; set; } = new HashSet<Pago>();
     private Factura() { }
     public Factura(decimal impuestos, decimal total, Guid ordenServicioId)
     {
