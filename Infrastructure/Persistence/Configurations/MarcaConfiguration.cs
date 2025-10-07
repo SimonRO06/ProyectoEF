@@ -12,15 +12,17 @@ public class MarcaConfiguration : IEntityTypeConfiguration<Marca>
 {
     public void Configure(EntityTypeBuilder<Marca> builder)
     {
+        builder.ToTable("brands");
+
         builder.HasKey(m => m.Id);
-        builder.Property(m => m.Id)
-            .IsRequired();
+
         builder.Property(m => m.Nombre)
             .IsRequired()
-            .HasColumnType("varchar(100)");
+            .HasColumnType("varchar(120)");
+
         builder.HasMany(m => m.Modelos)
             .WithOne(mod => mod.Marca)
-            .HasForeignKey(mod => mod.MarcaId)
+            .HasForeignKey(m => m.MarcaId)
             .IsRequired();
 
     }

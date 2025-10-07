@@ -16,7 +16,7 @@ public class ClienteConfiguration : IEntityTypeConfiguration<Cliente>
         builder.HasKey(c => c.Id);
         builder.Property(c => c.Nombre)
                .IsRequired()
-               .HasColumnType("varchar(50)");
+               .HasColumnType("varchar(120)");
 
         builder.Property(c => c.Telefono)
                 .IsRequired()
@@ -31,5 +31,7 @@ public class ClienteConfiguration : IEntityTypeConfiguration<Cliente>
                 .HasForeignKey(v => v.ClienteId)
                 .OnDelete(DeleteBehavior.SetNull); 
         
+        builder.HasIndex(c => c.Correo)
+                   .IsUnique();
    }
 }

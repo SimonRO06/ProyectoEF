@@ -13,25 +13,25 @@ public class DetalleOrdenConfiguration : IEntityTypeConfiguration<DetalleOrden>
     public void Configure(EntityTypeBuilder<DetalleOrden> builder)
     {
         builder.ToTable("order_details");
-        builder.HasKey(o => o.Id);
+        builder.HasKey(d => d.Id);
 
-        builder.Property(p => p.Cantidad)
+        builder.Property(d => d.Cantidad)
        .IsRequired();
 
-        builder.Property(p => p.CostoUnitario)
+        builder.Property(d => d.CostoUnitario)
             .IsRequired()
             .HasColumnType("decimal(18,2)");
 
     
-        builder.HasOne(os => os.OrdenServicio)
-            .WithMany(o => o.DetallesOrdenes)
-            .HasForeignKey(os => os.OrdenServicioId)
-            .IsRequired();
+        builder.HasOne(d => d.OrdenServicio)
+            .WithMany(de => de.DetallesOrdenes)
+            .HasForeignKey(d => d.OrdenServicioId)
+            .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(r => r.Repuesto)
-            .WithMany(o => o.DetallesOrden)
-            .HasForeignKey(r => r.RepuestoId)
-            .IsRequired();
+        builder.HasOne(d => d.Repuesto)
+            .WithMany(r => r.DetallesOrdenes)
+            .HasForeignKey(d => d.RepuestoId)
+            .OnDelete(DeleteBehavior.SetNull);
 
 
     }

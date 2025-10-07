@@ -30,7 +30,7 @@ public class PagoConfiguration : IEntityTypeConfiguration<Pago>
         builder.HasOne(p => p.Factura)
             .WithMany(f => f.Pagos) 
             .HasForeignKey(p => p.FacturaId)
-            .IsRequired();
+            .OnDelete(DeleteBehavior.SetNull); 
 
     }
 }

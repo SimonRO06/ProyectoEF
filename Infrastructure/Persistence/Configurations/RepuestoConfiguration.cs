@@ -14,14 +14,14 @@ public class RepuestoConfiguration : IEntityTypeConfiguration<Repuesto>
        {
               
               builder.ToTable("spare_parts");
-              builder.HasKey(c => c.Id);
+              builder.HasKey(p => p.Id);
               builder.Property(p => p.Codigo)
                      .IsRequired()
-                     .HasColumnType("varchar(30)");
+                     .HasColumnType("varchar(150)");
 
               builder.Property(p => p.Descripcion)
                      .IsRequired()
-                     .HasColumnType("varchar(100)");
+                     .HasColumnType("varchar(180)");
 
               builder.Property(p => p.CantidadStock)
                      .IsRequired();
@@ -30,8 +30,8 @@ public class RepuestoConfiguration : IEntityTypeConfiguration<Repuesto>
                      .IsRequired()
                      .HasColumnType("decimal(18,2)");
                      
-              builder.HasMany(r => r.DetallesOrden)
-                     .WithOne(d => d.Repuesto)
+              builder.HasMany(d => d.DetallesOrdenes)
+                     .WithOne(p => p.Repuesto)
                      .HasForeignKey(d => d.RepuestoId)
                      .IsRequired();
 

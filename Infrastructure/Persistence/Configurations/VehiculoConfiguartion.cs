@@ -10,34 +10,37 @@ namespace Infrastructure.Persistence.Configurations;
 
 public class VehiculoConfiguartion : IEntityTypeConfiguration<Vehiculo>
 {
-    public void Configure(EntityTypeBuilder<Vehiculo> builder)
-    {
-        builder.ToTable("vehicles");
-        builder.HasKey(v => v.Id);
-        builder.Property(v => v.Año)
-               .IsRequired();
+       public void Configure(EntityTypeBuilder<Vehiculo> builder)
+       {
+              builder.ToTable("vehicles");
+              builder.HasKey(v => v.Id);
+              builder.Property(v => v.Año)
+                     .IsRequired();
 
-        builder.Property(v => v.NumeroSerie)
-               .IsRequired()
-               .HasColumnType("varchar(100)");
+              builder.Property(v => v.NumeroSerie)
+                     .IsRequired()
+                     .HasColumnType("varchar(120)");
 
-        builder.Property(v => v.Kilometraje)
-               .IsRequired();
+              builder.Property(v => v.Kilometraje)
+                     .IsRequired();
 
-        builder.HasOne(c => c.Cliente)
-               .WithMany(c => c.Vehiculos)
-               .HasForeignKey(p => p.ClienteId)
-               .IsRequired();
+              builder.HasOne(v => v.Cliente)
+                     .WithMany(c => c.Vehiculos)
+                     .HasForeignKey(v => v.ClienteId)
+                     .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasOne(p => p.Modelo)
-               .WithMany(m => m.Vehiculos)
-               .HasForeignKey(m => m.ModeloId)
-               .IsRequired();
+              builder.HasOne(v => v.Modelo)
+                     .WithMany(m => m.Vehiculos)
+                     .HasForeignKey(v => v.ModeloId)
+                     .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(p => p.OrdenesServicios)
-               .WithOne(os => os.Vehiculo)
-               .HasForeignKey(os => os.VehiculoId)
-               .IsRequired();
+              builder.HasMany(o => o.OrdenesServicios)
+                     .WithOne(v => v.Vehiculo)
+                     .HasForeignKey(o => o.VehiculoId)
+                     .OnDelete(DeleteBehavior.SetNull);
+
+              builder.HasIndex(v => v.NumeroSerie)
+                   .IsUnique();
 
     }
 }

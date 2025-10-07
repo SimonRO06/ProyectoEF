@@ -17,17 +17,17 @@ public class ModeloConfiguration : IEntityTypeConfiguration<Modelo>
         
         builder.Property(m => m.Nombre)
             .IsRequired()
-            .HasColumnType("varchar(100)");
+            .HasColumnType("varchar(120)");
 
         builder.HasOne(m => m.Marca)
             .WithMany(ma => ma.Modelos)
             .HasForeignKey(m => m.MarcaId)
-            .IsRequired();
+            .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(m => m.Vehiculos)
-            .WithOne(v => v.Modelo)
+        builder.HasMany(v => v.Vehiculos)
+            .WithOne(m => m.Modelo)
             .HasForeignKey(v => v.ModeloId)
-            .IsRequired();
+            .OnDelete(DeleteBehavior.SetNull); 
 
 
     }

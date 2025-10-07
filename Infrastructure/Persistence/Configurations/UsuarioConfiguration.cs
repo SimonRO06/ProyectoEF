@@ -16,11 +16,11 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
         builder.HasKey(u => u.Id);
         builder.Property(u => u.Nombre)
                .IsRequired()
-               .HasColumnType("varchar(50)");
+               .HasColumnType("varchar(120)");
 
-        builder.Property(c => c.Correo)
+        builder.Property(u => u.Correo)
             .IsRequired()
-            .HasColumnType("varchar(100)");
+            .HasColumnType("varchar(150)");
 
         builder.Property(u => u.ContraseñaHasheada)
                .HasColumnName("password_hash")
@@ -32,10 +32,13 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
                .HasColumnName("rol")
                .HasColumnType("varchar(20)")
                .IsRequired();
-               
+
         builder.HasMany(o => o.OrdenesServicios)
         .WithOne(u => u.Usuario)
         .HasForeignKey(o => o.UsuarioId)
         .OnDelete(DeleteBehavior.SetNull); 
+
+        builder.HasIndex(u => u.Correo)
+                   .IsUnique();
     }
 }

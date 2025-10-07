@@ -5,4 +5,4 @@ using System.Threading.Tasks;
 
 namespace Api.Dtos.Facturas;
 
-public record UpdateFacturaDto(decimal Impuestos, decimal Total);
+public record UpdateFacturaDto(decimal Total);

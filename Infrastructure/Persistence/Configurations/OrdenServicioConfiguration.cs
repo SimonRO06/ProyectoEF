@@ -42,13 +42,13 @@ public class OrdenServicioConfiguration : IEntityTypeConfiguration<OrdenServicio
             .HasForeignKey(os => os.VehiculoId)
             .IsRequired(false);
 
-        builder.HasMany(os => os.DetallesOrdenes)
-            .WithOne(d => d.OrdenServicio)  // DetalleOrden tiene OrdenServicio
+        builder.HasMany(d => d.DetallesOrdenes)
+            .WithOne(os => os.OrdenServicio)  
             .HasForeignKey(d => d.OrdenServicioId)
             .IsRequired();
 
-        builder.HasMany(os => os.Facturas)
-            .WithOne(f => f.OrdenServicio)
+        builder.HasMany(f => f.Facturas)
+            .WithOne(os => os.OrdenServicio)
             .HasForeignKey(f => f.OrdenServicioId)
             .IsRequired();
 
