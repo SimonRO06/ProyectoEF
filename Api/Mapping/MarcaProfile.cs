@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.Dtos.Marcas;
 using AutoMapper;
-using Domain.Entidades;
+using Domain.Entities;
 
 namespace Api.Mapping;
 

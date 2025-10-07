@@ -9,7 +9,7 @@ public class Marca
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
     public string Nombre { get; private set; } = null!;
-    public virtual ICollection<Vehiculo> Vehiculos { get; set; } = new HashSet<Vehiculo>();
+    public virtual ICollection<Modelo> Modelos { get; set; } = new HashSet<Modelo>();
     public Marca(string nombre)
     { Nombre = nombre; }
 }

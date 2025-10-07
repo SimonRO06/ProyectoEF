@@ -3,10 +3,5 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Api.Dtos.Modelos
-{
-    public class CreateModeloDto
-    {
-        
-    }
-}
+namespace Api.Dtos.Modelos;
+public record CreateModeloDto( string Nombre, Guid MarcaId);
