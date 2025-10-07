@@ -15,6 +15,6 @@ public class Usuario
 
     public virtual ICollection<OrdenServicio> OrdenesServicios { get; set; } = new HashSet<OrdenServicio>();
     private Usuario() { }
-    public Usuario(string nombre, string correo, string contraseña_hasheada, Rol rol)
-    { Nombre = nombre; Correo = correo; ContraseñaHasheada = contraseña_hasheada; Rol = rol; }
+    public Usuario(string nombre, string correo, Rol rol)
+    { Nombre = nombre; Correo = correo; Rol = rol; }
 }
