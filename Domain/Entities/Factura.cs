@@ -12,6 +12,7 @@ public class Factura
     public decimal SubTotal { get; private set; }
     public decimal Impuestos { get; private set; }
     public decimal Total { get; private set; }
+    
     public Guid OrdenServicioId { get; set; }
     public virtual OrdenServicio? OrdenServicio { get; set; }
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Domain.Entidades;
+using Domain.Entities;
 
 namespace Domain.Entities;
 
@@ -12,6 +12,7 @@ public class DetalleOrden
     public int Cantidad { get; private set; }
     public decimal CostoUnitario { get; private set; }
     public decimal SubTotal { get; private set; }
+    
     public Guid OrdenServicioId { get; set; }
     public virtual OrdenServicio? OrdenServicio { get; set; }
     public Guid RepuestoId { get; set; }

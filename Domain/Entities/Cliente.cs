@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Domain.Entidades;
+using Domain.Entities;
 
 namespace Domain.Entities;
 
@@ -16,5 +16,4 @@ public class Cliente
     private Cliente() { }
     public Cliente(string nombre, string telefono, string correo)
     { Nombre = nombre; Telefono = telefono; Correo = correo; }
-    
-    }
+}
