@@ -16,9 +16,9 @@ public class Factura
     public virtual OrdenServicio? OrdenServicio { get; set; }
     public virtual ICollection<Pago> Pagos { get; set; } = new HashSet<Pago>();
     private Factura() { }
-    public Factura(decimal impuestos, decimal total, Guid ordenServicioId)
+    public Factura(DateTime fecha_emision, decimal impuestos, decimal total, Guid ordenServicioId)
     {
-        FechaEmision = DateTime.UtcNow; Impuestos = impuestos; Total = total;
+        FechaEmision = fecha_emision; Impuestos = impuestos; Total = total;
         OrdenServicioId = ordenServicioId;
     }
 

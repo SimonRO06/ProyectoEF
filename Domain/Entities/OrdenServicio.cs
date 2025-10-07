@@ -17,9 +17,9 @@ public class OrdenServicio
     public DateTime FechaEstimadaEntrega { get; private set; }
     public Estado Estado { get; private set; }
 
-    public int? UsuarioId { get; set; }
+    public Guid UsuarioId { get; set; }
     public virtual Usuario? Usuario { get; set; }
-    public int? VehiculoId { get; set; }
+    public Guid VehiculoId { get; set; }
     public virtual Vehiculo? Vehiculo { get; set; }
 
     public virtual ICollection<DetalleOrden> DetallesOrdenes { get; set; } = new HashSet<DetalleOrden>();
@@ -31,10 +31,13 @@ public class OrdenServicio
     public OrdenServicio(TipoServicio tipo_servicio, DateTime fecha_ingreso, Estado estado1, DateTime fecha_estimada_entrega, Estado estado)
     { TipoServicio = tipo_servicio; FechaIngreso = fecha_ingreso; FechaEstimadaEntrega = fecha_estimada_entrega; Estado = estado; }
 
-    public OrdenServicio(TipoServicio tipoServicio, DateTime fechaEstimadaEntrega, Estado estado, Guid usuarioId, Guid vehiculoId)
+    public OrdenServicio(TipoServicio tipoServicio, DateTime fechaIngreso, DateTime fechaEstimadaEntrega, Estado estado, Guid usuarioId, Guid vehiculoId)
     {
-        this.tipoServicio = tipoServicio;
+        TipoServicio = tipoServicio;
         FechaEstimadaEntrega = fechaEstimadaEntrega;
-        this.estado = estado;
+        FechaIngreso = fechaIngreso;
+        Estado = estado;
+        UsuarioId = usuarioId;
+        VehiculoId = vehiculoId;
     }
 }

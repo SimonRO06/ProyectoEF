@@ -17,9 +17,9 @@ public class Pago
 
     private Pago() { }
 
-    public Pago(decimal monto, MetodoPago metodoPago, Guid facturaId)
+    public Pago(DateTime fechaPago, decimal monto, MetodoPago metodoPago, Guid facturaId)
     {
-        FechaPago = DateTime.UtcNow;
+        FechaPago = fechaPago;
         Monto = monto;
         MetodoPago = metodoPago;
         FacturaId = facturaId;

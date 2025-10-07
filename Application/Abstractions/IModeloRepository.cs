@@ -7,7 +7,6 @@ using Domain.Entities;
 namespace Application.Abstractions;
 public interface IModeloRepository
 {
-    Task<Modelo?> GetByIdAsync(Guid id, CancellationToken ct = default);
     Task<IReadOnlyList<Modelo>> GetAllAsync(CancellationToken ct = default);
     Task<IReadOnlyList<Modelo>> GetByMarcaIdAsync(Guid MarcaId, CancellationToken ct = default);
     Task<IReadOnlyList<Modelo>> GetPagedAsync(int page, int size, string? q, CancellationToken ct = default);
