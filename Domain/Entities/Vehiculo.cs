@@ -19,7 +19,11 @@ public class Vehiculo
     public Guid MarcaId { get; set; }
     public virtual Marca? Marca { get; set; }
     private Vehiculo() { }
-    public Vehiculo(string modelo, int año, string numeroSerie, int kilometraje)
-    { Modelo = modelo; Año = año; NumeroSerie = numeroSerie; Kilometraje = kilometraje;}
-    
+    public Vehiculo(string modelo, int año, string numeroSerie, int kilometraje, Guid clienteId, Guid marcaId)
+    {
+        Modelo = modelo; Año = año; NumeroSerie = numeroSerie; Kilometraje = kilometraje;
+        ClienteId = clienteId;
+        MarcaId = marcaId;
+    }
+
 }

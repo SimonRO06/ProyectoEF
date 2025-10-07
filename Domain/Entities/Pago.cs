@@ -17,10 +17,11 @@ public class Pago
 
     private Pago() { }
 
-    public Pago(decimal monto, MetodoPago metodoPago)
+    public Pago(decimal monto, MetodoPago metodoPago, Guid facturaId)
     {
         FechaPago = DateTime.UtcNow;
         Monto = monto;
         MetodoPago = metodoPago;
+        FacturaId = facturaId;
     }
 }

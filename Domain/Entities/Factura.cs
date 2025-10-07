@@ -16,7 +16,10 @@ public class Factura
     public virtual OrdenServicio? OrdenServicio { get; set; }
 
     private Factura() { }
-    public Factura(decimal subtotal, decimal impuestos, decimal total)
-    { FechaEmision = DateTime.UtcNow;  SubTotal = subtotal; Impuestos = impuestos; Total = total; }
+    public Factura(decimal subtotal, decimal impuestos, decimal total, Guid ordenServicioId)
+    {
+        FechaEmision = DateTime.UtcNow; SubTotal = subtotal; Impuestos = impuestos; Total = total;
+        OrdenServicioId = ordenServicioId;
+    }
 
 }

@@ -5,4 +5,4 @@ using System.Threading.Tasks;
 using Domain.Enums;
 
 namespace Api.Dtos.OrdenesServicios;
-public record OrdenServicioDto( Guid Id, TipoServicio TipoServicio, DateTime FechaIngreso, DateTime FechaEstimadaEntrega, Estado Estado, int? UsuarioId, int? VehiculoId);
+public record OrdenServicioDto( Guid Id, TipoServicio TipoServicio, DateTime FechaIngreso, DateTime FechaEstimadaEntrega, Estado Estado, Guid UsuarioId, Guid VehiculoId);

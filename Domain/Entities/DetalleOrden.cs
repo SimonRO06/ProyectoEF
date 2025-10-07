@@ -18,6 +18,9 @@ public class DetalleOrden
     public virtual Repuesto? Repuesto { get; set; }
 
     private DetalleOrden() { }
-    public DetalleOrden(int cantidad, decimal costounitario, decimal subtotal)
-    { Cantidad = cantidad; CostoUnitario = costounitario; SubTotal = subtotal; }
+    public DetalleOrden(int cantidad, decimal costounitario, decimal subtotal, Guid ordenServicioId, Guid respuestaId)
+    {
+        Cantidad = cantidad; CostoUnitario = costounitario; SubTotal = subtotal;
+        OrdenServicioId = ordenServicioId;
+    }
 }
