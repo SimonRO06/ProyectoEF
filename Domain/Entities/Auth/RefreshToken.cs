@@ -7,7 +7,7 @@ namespace Domain.Entities.Auth;
 public class RefreshToken : BaseEntity
 {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public int UsuarioId { get; set; }
         public Usuario? Usuario { get; set; }
         public string? Token { get; set; }
         public DateTime Expires { get; set; }

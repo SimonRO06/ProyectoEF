@@ -6,9 +6,9 @@ namespace Api.Dtos.Auth;
 public class AddRoleDto
 {
     [Required]
-    public string? Username { get; set; }
+    public string? Nombre { get; set; }
     [Required]
-    public string? Password { get; set; }
+    public string? Contraseña { get; set; }
     [Required]
     public string? Role { get; set; }
 }

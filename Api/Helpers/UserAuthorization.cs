@@ -9,9 +9,9 @@ public class UserAuthorization
     public enum Roles
     {
         Administrator,
-        Manager,
-        Employee
+        Mecanico,
+        Secretario
     }
 
-    public const Roles rol_default = Roles.Employee;
+    public const Roles rol_default = Roles.Mecanico;
 }

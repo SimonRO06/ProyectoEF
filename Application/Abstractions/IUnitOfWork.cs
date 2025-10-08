@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Abstractions.Auth;
 
 namespace Application.Abstractions;
 public interface IUnitOfWork
@@ -15,6 +16,8 @@ public interface IUnitOfWork
     IRepuestoRepository Repuestos { get; }
     IUsuarioRepository Usuarios { get; }
     IVehiculoRepository Vehiculos { get; }
+    IUserMemberRolService UserMemberRoles { get; }
+    IRolService Roles { get; }
     // Task<int> SaveAsync();
     Task<int> SaveChanges(CancellationToken ct = default);
     Task ExecuteInTransactionAsync(Func<CancellationToken, Task> operation, CancellationToken ct = default);

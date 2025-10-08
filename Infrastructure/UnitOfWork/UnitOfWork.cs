@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Abstractions;
+using Application.Abstractions.Auth;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Repositories.Auth;
 
 namespace Infrastructure.UnitOfWork;
 
@@ -20,6 +22,7 @@ public class UnitOfWork : IUnitOfWork
     private IUsuarioRepository? _usuarioRepository;
     private IVehiculoRepository? _vehiculoRepository;
     private IModeloRepository? _modeloRepository;
+    private IRolService? _rolService;
     public UnitOfWork(AppDbContext context)
     {
         _context = context;
@@ -48,8 +51,9 @@ public class UnitOfWork : IUnitOfWork
     public IOrdenServicioRepository OrdenesServicios => _ordenServicioRepository ??= new OrdenServicioRepository(_context);
     public IPagoRepository Pagos => _pagoRepository ??= new PagoRepository(_context);
     public IRepuestoRepository Repuestos => _repuestoRepository ??= new RepuestoRepository(_context);
-    public IUsuarioRepository Usuarios => _usuarioRepository ??= new UsuarioRepository(_context);
     public IVehiculoRepository Vehiculos => _vehiculoRepository ??= new VehiculoRepository(_context);
     public IModeloRepository Modelos => _modeloRepository ??= new ModeloRepository(_context);
+    public IUsuarioRepository Usuarios => _userService ??= new UsuarioRepository(_context);
+    public IRolService Roles => _rolService ??= new RolRepository(_context);
     public IUserMemberRolService UserMemberRoles => throw new NotImplementedException();
 }

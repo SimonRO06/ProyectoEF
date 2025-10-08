@@ -14,6 +14,5 @@ public class Usuario : BaseEntity
     public ICollection<Rol> Rols { get; set; } = new HashSet<Rol>();
     public ICollection<UserMemberRol> UserMemberRols { get; set; } = new HashSet<UserMemberRol>();
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();
-
     public virtual ICollection<OrdenServicio> OrdenesServicios { get; set; } = new HashSet<OrdenServicio>();
 }

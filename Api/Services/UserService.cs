@@ -5,7 +5,9 @@ using System.Text;
 using Api.Dtos.Auth;
 using Api.Helpers;
 using Application.Abstractions;
+using Domain.Entities.Auth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -16,8 +18,8 @@ public class UserService : IUserService
 {
      private readonly JWT _jwt;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPasswordHasher<UserMember> _passwordHasher;
-    public UserService(IOptions<JWT> jwt, IUnitOfWork unitOfWork, IPasswordHasher<UserMember> passwordHasher)
+    private readonly IPasswordHasher<Usuario> _passwordHasher;
+    public UserService(IOptions<JWT> jwt, IUnitOfWork unitOfWork, IPasswordHasher<Usuario> passwordHasher)
     {
         _jwt = jwt.Value;
         _unitOfWork = unitOfWork;
@@ -25,26 +27,26 @@ public class UserService : IUserService
     }
     public async Task<string> RegisterAsync(RegisterDto registerDto)
     {
-        var usuario = new UserMember
+        var usuario = new Usuario
         {
-            Username = registerDto.Username ?? throw new ArgumentNullException(nameof(registerDto.Username)),
-            Email = registerDto.Email ?? throw new ArgumentNullException(nameof(registerDto.Email)),
-            Password = registerDto.Password ?? throw new ArgumentNullException(nameof(registerDto.Password)),
+            Nombre = registerDto.Nombre ?? throw new ArgumentNullException(nameof(registerDto.Nombre)),
+            Correo = registerDto.Correo ?? throw new ArgumentNullException(nameof(registerDto.Correo)),
+            Contraseña = registerDto.Contraseña ?? throw new ArgumentNullException(nameof(registerDto.Contraseña)),
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
 
-        usuario.Password = _passwordHasher.HashPassword(usuario, registerDto.Password!);
+        usuario.Contraseña = _passwordHasher.HashPassword(usuario, registerDto.Password!);
 
-        var usuarioExiste = _unitOfWork.UserMembers
-                                    .Find(u => u.Username.ToLower() == registerDto.Username.ToLower())
+        var usuarioExiste = _unitOfWork.Usuarios
+                                    .Find(u => u.Nombre.ToLower() == registerDto.Nombre.ToLower())
                                     .FirstOrDefault();
 
         if (usuarioExiste == null)
         {
             var defaultRoleName = UserAuthorization.rol_default.ToString();
             var rolPredeterminado = _unitOfWork.Roles
-                                    .Find(u => EF.Functions.ILike(u.Name, defaultRoleName))
+                                    .Find(u => EF.Functions.ILike(u.Nombre, defaultRoleName))
                                     .FirstOrDefault();
             if (rolPredeterminado == null)
             {
@@ -53,7 +55,7 @@ public class UserService : IUserService
                     // Intenta crear el rol por defecto si no existe
                     var nuevoRol = new Rol
                     {
-                        Name = defaultRoleName,
+                        Nombre = defaultRoleName,
                         Description = "Default role"
                     };
                     await _unitOfWork.Roles.AddAsync(nuevoRol);
@@ -64,7 +66,7 @@ public class UserService : IUserService
                 {
                     // Si otro proceso lo creó en paralelo, reintenta obtenerlo
                     rolPredeterminado = _unitOfWork.Roles
-                                        .Find(u => EF.Functions.ILike(u.Name, defaultRoleName))
+                                        .Find(u => EF.Functions.ILike(u.Nombre, defaultRoleName))
                                         .FirstOrDefault();
                     if (rolPredeterminado == null)
                     {
@@ -75,10 +77,10 @@ public class UserService : IUserService
             try
             {
                 usuario.Rols.Add(rolPredeterminado);
-                await _unitOfWork.UserMembers.AddAsync(usuario);
+                await _unitOfWork.Usuarios.AddAsync(usuario);
                 await _unitOfWork.SaveChanges();
 
-                return $"El usuario  {registerDto.Username} ha sido registrado exitosamente";
+                return $"El usuario  {registerDto.Nombre} ha sido registrado exitosamente";
             }
             catch (Exception ex)
             {
@@ -88,7 +90,7 @@ public class UserService : IUserService
         }
         else
         {
-            return $"El usuario con {registerDto.Username} ya se encuentra registrado.";
+            return $"El usuario con {registerDto.Nombre} ya se encuentra registrado.";
         }
     }
 
@@ -97,17 +99,17 @@ public class UserService : IUserService
         var dto = new DataUserDto { IsAuthenticated = false };
 
         // 1) Normalización y validación básica (evita enumeración de usuarios)
-        var username = model.Username?.Trim();
-        var password = model.Password ?? string.Empty;
+        var username = model.Nombre?.Trim();
+        var password = model.Contraseña ?? string.Empty;
 
-        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(contraseña))
         {
             dto.Message = "Usuario o contraseña inválidos.";
             return dto;
         }
 
         // 2) Lookup del usuario (ideal: repositorio case-insensitive/normalizado)
-        var usuario = await _unitOfWork.UserMembers.GetByUserNameAsync(username, ct);
+        var usuario = await _unitOfWork.Usuarios.GetByUserNameAsync(nombre, ct);
         if (usuario is null)
         {
             dto.Message = "Usuario o contraseña inválidos.";
@@ -115,7 +117,7 @@ public class UserService : IUserService
         }
 
         // 3) Verificación de contraseña (+ rehash si se requiere)
-        var verification = _passwordHasher.VerifyHashedPassword(usuario, usuario.Password, password);
+        var verification = _passwordHasher.VerifyHashedPassword(usuario, usuario.Contraseña, contraseña);
         if (verification == PasswordVerificationResult.Failed)
         {
             dto.Message = "Usuario o contraseña inválidos.";
@@ -124,8 +126,8 @@ public class UserService : IUserService
 
         if (verification == PasswordVerificationResult.SuccessRehashNeeded)
         {
-            usuario.Password = _passwordHasher.HashPassword(usuario, password);
-            await _unitOfWork.UserMembers.UpdateAsync(usuario, ct);
+            usuario.Contraseña = _passwordHasher.HashPassword(usuario, contraseña);
+            await _unitOfWork.Usuarios.UpdateAsync(usuario, ct);
             // No retornamos aún; seguimos el flujo normal
         }
 
@@ -145,7 +147,7 @@ public class UserService : IUserService
             var refresh = CreateRefreshToken();
             usuario.RefreshTokens.Add(refresh);
 
-            await _unitOfWork.UserMembers.UpdateAsync(usuario, ct);
+            await _unitOfWork.Usuarios.UpdateAsync(usuario, ct);
             await _unitOfWork.SaveChanges(ct);
         }, ct);
 
@@ -157,27 +159,27 @@ public class UserService : IUserService
 
         dto.IsAuthenticated = true;
         dto.Token = new JwtSecurityTokenHandler().WriteToken(jwt);
-        dto.Email = usuario.Email;
-        dto.UserName = usuario.Username;
+        dto.Correo = usuario.Email;
+        dto.Nombre = usuario.Username;
         dto.Roles = roles;
         dto.RefreshToken = currentRefresh.Token;
         dto.RefreshTokenExpiration = DateTime.SpecifyKind(currentRefresh.Expires, DateTimeKind.Utc);
 
         return dto;
     }
-    private JwtSecurityToken CreateJwtToken(UserMember usuario)
+    private JwtSecurityToken CreateJwtToken(Usuario usuario)
     {
         var roles = usuario.Rols;
         var roleClaims = new List<Claim>();
         foreach (var role in roles)
         {
-            roleClaims.Add(new Claim("roles", role.Name));
+            roleClaims.Add(new Claim("roles", role.Nombre));
         }
         var claims = new[]
         {
-                                new Claim(JwtRegisteredClaimNames.Sub, usuario.Username),
+                                new Claim(JwtRegisteredClaimNames.Sub, usuario.Nombre),
                                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                                new Claim(JwtRegisteredClaimNames.Email, usuario.Email),
+                                new Claim(JwtRegisteredClaimNames.Correo, usuario.Correo),
                                 new Claim("uid", usuario.Id.ToString())
                         }
         .Union(roleClaims);
@@ -212,23 +214,23 @@ public class UserService : IUserService
     public async Task<string> AddRoleAsync(AddRoleDto model)
     {
 
-        if (string.IsNullOrEmpty(model.Username))
+        if (string.IsNullOrEmpty(model.Nombre))
         {
             return "Username cannot be null or empty.";
         }
-        var user = await _unitOfWork.UserMembers
-                    .GetByUserNameAsync(model.Username);
+        var user = await _unitOfWork.Usuarios
+                    .GetByUserNameAsync(model.Nombre);
         if (user == null)
         {
-            return $"User {model.Username} does not exists.";
+            return $"User {model.Nombre} does not exists.";
         }
 
-        if (string.IsNullOrEmpty(model.Password))
+        if (string.IsNullOrEmpty(model.Contraseña))
         {
             return $"Password cannot be null or empty.";
         }
 
-        var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+        var result = _passwordHasher.VerifyHashedPassword(usuario, usuario.Contraseña, model.Contraseña);
 
         if (result == PasswordVerificationResult.Success)
         {
@@ -240,7 +242,7 @@ public class UserService : IUserService
             var roleName = model.Role.Trim();
 
             var rolExists = _unitOfWork.Roles
-                                        .Find(u => EF.Functions.ILike(u.Name, roleName))
+                                        .Find(u => EF.Functions.ILike(u.Nombre, roleName))
                                         .FirstOrDefault();
 
             if (rolExists == null)
@@ -249,7 +251,7 @@ public class UserService : IUserService
                 {
                     var nuevoRol = new Rol
                     {
-                        Name = roleName,
+                        Nombre = roleName,
                         Description = $"{roleName} role"
                     };
                     await _unitOfWork.Roles.AddAsync(nuevoRol);
@@ -260,7 +262,7 @@ public class UserService : IUserService
                 {
                     // Race condition: role created concurrently, re-fetch
                     rolExists = _unitOfWork.Roles
-                                .Find(u => EF.Functions.ILike(u.Name, roleName))
+                                .Find(u => EF.Functions.ILike(u.Nombre, roleName))
                                 .FirstOrDefault();
                     if (rolExists == null)
                     {
@@ -269,15 +271,15 @@ public class UserService : IUserService
                 }
             }
 
-            var userHasRole = user.Rols.Any(r => r.Name.Equals(roleName, StringComparison.OrdinalIgnoreCase) || r.Id == rolExists.Id);
+            var userHasRole = usuario.Rols.Any(r => r.Nombre.Equals(roleName, StringComparison.OrdinalIgnoreCase) || r.Id == rolExists.Id);
             if (!userHasRole)
             {
                 user.Rols.Add(rolExists);
-                await _unitOfWork.UserMembers.UpdateAsync(user);
+                await _unitOfWork.Usuarios.UpdateAsync(usuario);
                 await _unitOfWork.SaveChanges();
             }
 
-            return $"Role {roleName} added to user {model.Username} successfully.";
+            return $"Role {roleName} added to user {model.Nombre} successfully.";
         }
         return $"Invalid Credentials";
     }
@@ -285,7 +287,7 @@ public class UserService : IUserService
     {
         var dataUserDto = new DataUserDto();
 
-        var usuario = await _unitOfWork.UserMembers
+        var usuario = await _unitOfWork.Usuarios
                         .GetByRefreshTokenAsync(refreshToken);
 
         if (usuario == null)
@@ -308,16 +310,16 @@ public class UserService : IUserService
         //generate a new refresh token and save it in the database
         var newRefreshToken = CreateRefreshToken();
         usuario.RefreshTokens.Add(newRefreshToken);
-        await _unitOfWork.UserMembers.UpdateAsync(usuario);
+        await _unitOfWork.Usuarios.UpdateAsync(usuario);
         await _unitOfWork.SaveChanges();
         //Generate a new Json Web Token
         dataUserDto.IsAuthenticated = true;
         JwtSecurityToken jwtSecurityToken = CreateJwtToken(usuario);
         dataUserDto.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-        dataUserDto.Email = usuario.Email;
-        dataUserDto.UserName = usuario.Username;
+        dataUserDto.Correo = usuario.Correo;
+        dataUserDto.Nombre = usuario.Nombre;
         dataUserDto.Roles = usuario.Rols
-                                        .Select(u => u.Name)
+                                        .Select(u => u.Nombre)
                                         .ToList();
         dataUserDto.RefreshToken = newRefreshToken.Token;
         dataUserDto.RefreshTokenExpiration = newRefreshToken.Expires;
