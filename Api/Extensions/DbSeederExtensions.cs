@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Api.Helpers;
 using Domain.Entities.Auth;
 using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Extensions;
 public static class DbSeederExtensions

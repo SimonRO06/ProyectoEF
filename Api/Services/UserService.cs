@@ -1,4 +1,5 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,7 +10,6 @@ using Domain.Entities.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Services;
@@ -184,6 +184,7 @@ public class UserService : IUserService
                         }
         .Union(roleClaims);
         if (string.IsNullOrEmpty(_jwt.Key))
+        
         {
             throw new InvalidOperationException("JWT Key cannot be null or empty.");
         }

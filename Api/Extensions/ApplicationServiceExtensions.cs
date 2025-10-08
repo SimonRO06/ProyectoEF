@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Threading.RateLimiting;
-using System.Threading.Tasks;
 using Api.Helpers;
 using Api.Helpers.Errors;
 using Api.Mapping;
@@ -11,8 +9,10 @@ using Application.Abstractions;
 using Domain.Entities.Auth;
 using FluentValidation;
 using Infrastructure.UnitOfWork;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Extensions;
 public static class ApplicationServiceExtensions
