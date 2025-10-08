@@ -19,7 +19,7 @@ public class UnitOfWork : IUnitOfWork
     private IOrdenServicioRepository? _ordenServicioRepository;
     private IPagoRepository? _pagoRepository;
     private IRepuestoRepository? _repuestoRepository;
-    private IUsuarioRepository? _usuarioRepository;
+    private IUserMemberService? _userMemberService;
     private IVehiculoRepository? _vehiculoRepository;
     private IModeloRepository? _modeloRepository;
     private IRolService? _rolService;
@@ -53,7 +53,7 @@ public class UnitOfWork : IUnitOfWork
     public IRepuestoRepository Repuestos => _repuestoRepository ??= new RepuestoRepository(_context);
     public IVehiculoRepository Vehiculos => _vehiculoRepository ??= new VehiculoRepository(_context);
     public IModeloRepository Modelos => _modeloRepository ??= new ModeloRepository(_context);
-    public IUsuarioRepository Usuarios => _userService ??= new UsuarioRepository(_context);
+    public IUserMemberService UserMembers => _userMemberService ??= new UserMemberRepository(_context);
     public IRolService Roles => _rolService ??= new RolRepository(_context);
     public IUserMemberRolService UserMemberRoles => throw new NotImplementedException();
 }

@@ -18,7 +18,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<Repuesto> Repuestos => Set<Repuesto>();
     public DbSet<Vehiculo> Vehiculos => Set<Vehiculo>();
     public DbSet<Modelo> Modelos => Set<Modelo>();
-    public DbSet<Usuario> Usuarios => Set<Usuario>();
+    public DbSet<UserMember> UsersMembers => Set<UserMember>();
     public DbSet<Rol> Rols => Set<Rol>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         => modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

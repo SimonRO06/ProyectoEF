@@ -6,7 +6,7 @@ namespace Api.Dtos.Auth;
 public class LoginDto
 {
     [Required]
-    public string? Nombre { get; set; }
+    public string? Username { get; set; }
     [Required]
-    public string? Contraseña { get; set; }
+    public string? Password { get; set; }
 }

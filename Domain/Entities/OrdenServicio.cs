@@ -3,41 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities;
+using Domain.Entities.Auth;
 using Domain.Enums;
 
 namespace Domain.Entities;
 public class OrdenServicio
 {
-    private TipoServicio tipoServicio;
-    private Estado estado;
 
     public Guid Id { get; private set; } = Guid.NewGuid();
-    public TipoServicio TipoServicio { get; private set; }
-    public DateTime FechaIngreso { get; private set; } = DateTime.UtcNow;
-    public DateTime FechaEstimadaEntrega { get; private set; }
-    public Estado Estado { get; private set; }
+        public TipoServicio TipoServicio { get; private set; }
+        public DateTime FechaIngreso { get; private set; } = DateTime.UtcNow;
+        public DateTime FechaEstimadaEntrega { get; private set; }
+        public Estado Estado { get; private set; }
 
-    public Guid UsuarioId { get; set; }
-    public virtual Usuario? Usuario { get; set; }
-    public Guid VehiculoId { get; set; }
-    public virtual Vehiculo? Vehiculo { get; set; }
+        public int UserMemberId { get; set; }
+        public virtual UserMember? UserMember { get; set; }
+        public Guid VehiculoId { get; set; }
+        public virtual Vehiculo? Vehiculo { get; set; }
 
-    public virtual ICollection<DetalleOrden> DetallesOrdenes { get; set; } = new HashSet<DetalleOrden>();
-    public virtual ICollection<Factura> Facturas { get; set; } = new HashSet<Factura>();
-    private OrdenServicio(TipoServicio tipoServicio)
-    {
-        this.tipoServicio = tipoServicio;
-    }
-    public OrdenServicio(TipoServicio tipo_servicio, DateTime fecha_ingreso, Estado estado1, DateTime fecha_estimada_entrega, Estado estado)
-    { TipoServicio = tipo_servicio; FechaIngreso = fecha_ingreso; FechaEstimadaEntrega = fecha_estimada_entrega; Estado = estado; }
+        public virtual ICollection<DetalleOrden> DetallesOrdenes { get; set; } = new HashSet<DetalleOrden>();
+        public virtual ICollection<Factura> Facturas { get; set; } = new HashSet<Factura>();
 
-    public OrdenServicio(TipoServicio tipoServicio, DateTime fechaIngreso, DateTime fechaEstimadaEntrega, Estado estado, Guid usuarioId, Guid vehiculoId)
-    {
-        TipoServicio = tipoServicio;
-        FechaEstimadaEntrega = fechaEstimadaEntrega;
-        FechaIngreso = fechaIngreso;
-        Estado = estado;
-        UsuarioId = usuarioId;
-        VehiculoId = vehiculoId;
-    }
+        private OrdenServicio() { }
+        public OrdenServicio(TipoServicio tipoServicio, DateTime fechaIngreso, DateTime fechaEstimadaEntrega, Estado estado, int userMemberId, Guid vehiculoId)
+        {
+            TipoServicio = tipoServicio;
+            FechaIngreso = fechaIngreso;
+            FechaEstimadaEntrega = fechaEstimadaEntrega;
+            Estado = estado;
+            UserMemberId = userMemberId;
+            VehiculoId = vehiculoId;
+        }
+
 }

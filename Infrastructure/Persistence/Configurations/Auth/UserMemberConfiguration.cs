@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations.Auth;
-public class UserMemberConfiguration : IEntityTypeConfiguration<Usuario>
+public class UserMemberConfiguration : IEntityTypeConfiguration<UserMember>
 {
-    public void Configure(EntityTypeBuilder<Usuario> builder)
+    public void Configure(EntityTypeBuilder<UserMember> builder)
     {
         builder.ToTable("users_members");
 
@@ -19,19 +19,19 @@ public class UserMemberConfiguration : IEntityTypeConfiguration<Usuario>
                .IsRequired()
                .HasColumnName("id");
 
-        builder.Property(u => u.Nombre)
+        builder.Property(u => u.Username)
             .HasMaxLength(50)
             .IsRequired()
             .HasColumnName("name");
 
-        builder.Property(u => u.Nombre)
+        builder.Property(u => u.Email)
             .HasMaxLength(50)
             .IsRequired()
             .HasColumnName("email");
 
-        builder.HasIndex(u => u.Correo).IsUnique();
+        builder.HasIndex(u => u.Email).IsUnique();
 
-        builder.Property(u => u.Contraseña)
+        builder.Property(u => u.Password)
            .HasColumnType("varchar")
            .HasMaxLength(255)
            .IsRequired();
@@ -49,7 +49,7 @@ public class UserMemberConfiguration : IEntityTypeConfiguration<Usuario>
             .ValueGeneratedOnAddOrUpdate();
         builder
                .HasMany(p => p.Rols)
-               .WithMany(r => r.Usuarios)
+               .WithMany(r => r.UsersMembers)
                .UsingEntity<UserMemberRol>(
 
                    j => j
@@ -58,19 +58,19 @@ public class UserMemberConfiguration : IEntityTypeConfiguration<Usuario>
                    .HasForeignKey(ut => ut.RolId),
 
                    j => j
-                   .HasOne(et => et.Usuarios)
+                   .HasOne(et => et.UserMembers)
                    .WithMany(et => et.UserMemberRols)
-                   .HasForeignKey(el => el.UsuarioId),
+                   .HasForeignKey(el => el.UserMemberId),
 
                    j =>
                    {
                        j.ToTable("users_rols");
-                       j.HasKey(t => new { t.UsuarioId, t.RolId });
+                       j.HasKey(t => new { t.UserMemberId, t.RolId });
 
                    });
 
                 builder.HasMany(p => p.RefreshTokens)
-                .WithOne(p => p.Usuario)
-                .HasForeignKey(p => p.UsuarioId);
+                .WithOne(p => p.UserMember)
+                .HasForeignKey(p => p.UserId);
     }
 }

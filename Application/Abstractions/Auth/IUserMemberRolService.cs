@@ -10,5 +10,5 @@ public interface IUserMemberRolService
     Task<IEnumerable<UserMemberRol>> GetAllAsync();
         void Remove(UserMemberRol entity);
         void Update(UserMemberRol entity);
-        Task<UserMemberRol?> GetByIdsAsync(int usuarioId, int roleId);
+        Task<UserMemberRol?> GetByIdsAsync(int userMemberId, int roleId);
 }

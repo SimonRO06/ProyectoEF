@@ -9,6 +9,6 @@ public class Rol : BaseEntity
     public int Id { get; set; }
     public string Nombre { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public ICollection<Usuario> Usuarios { get; set; } = new HashSet<Usuario>();
+    public ICollection<UserMember> UsersMembers { get; set; } = new HashSet<UserMember>();
     public ICollection<UserMemberRol> UserMemberRols { get; set; } = new HashSet<UserMemberRol>();
 }

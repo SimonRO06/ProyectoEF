@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 namespace Domain.Entities.Auth;
 public class UserMemberRol : BaseEntity
 {
-        public int UsuarioId { get; set; }
-        public Usuario usuario { get; set; } = null!;
+        public int UserMemberId { get; set; }
+        public UserMember UserMembers { get; set; } = null!;
         public int RolId { get; set; }
         public Rol Rol { get; set; }  = null!;
 }

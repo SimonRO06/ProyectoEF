@@ -32,9 +32,9 @@ public class OrdenServicioConfiguration : IEntityTypeConfiguration<OrdenServicio
             .HasConversion<int>(); 
 
 
-        builder.HasOne(os => os.Usuario)
+        builder.HasOne(os => os.UserMember)
             .WithMany(u => u.OrdenesServicios) 
-            .HasForeignKey(os => os.UsuarioId)
+            .HasForeignKey(os => os.UserMemberId)
             .IsRequired(false);
 
         builder.HasOne(os => os.Vehiculo)

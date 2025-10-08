@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Helpers;
+using Domain.Entities.Auth;
 using Infrastructure.Persistence;
 
 namespace Api.Extensions;

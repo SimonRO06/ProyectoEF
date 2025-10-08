@@ -15,6 +15,7 @@ public class PagoProfile : Profile
 
         CreateMap<CreatePagoDto, Pago>()
             .ConstructUsing(src => new Pago(
+                src.FechaPago,
                 src.Monto,
                 src.MetodoPago,
                 src.FacturaId

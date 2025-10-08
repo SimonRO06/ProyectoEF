@@ -4,10 +4,14 @@ using System.Linq;
 using System.Threading.RateLimiting;
 using System.Threading.Tasks;
 using Api.Helpers;
+using Api.Helpers.Errors;
 using Api.Mapping;
+using Api.Services;
 using Application.Abstractions;
+using Domain.Entities.Auth;
 using FluentValidation;
 using Infrastructure.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Extensions;
@@ -19,8 +23,8 @@ public static class ApplicationServiceExtensions
         {
             HashSet<String> allowed = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
-                "https://app.autotaller.com",
-                "https://admin.autotaller.com"
+                "https://app.ejemplo.com",
+                "https://admin.ejemplo.com"
             };
             options.AddPolicy("CorsPolicy", builder =>
                 builder.AllowAnyOrigin()   //WithOrigins("https://dominio.com")
@@ -54,7 +58,6 @@ public static class ApplicationServiceExtensions
         services.AddAutoMapper(typeof(OrdenServicioProfile).Assembly);
         services.AddAutoMapper(typeof(PagoProfile).Assembly);
         services.AddAutoMapper(typeof(RepuestoProfile).Assembly);
-        services.AddAutoMapper(typeof(UsuarioProfile).Assembly);
         services.AddAutoMapper(typeof(VehiculoProfile).Assembly);
     }
     public static IServiceCollection AddCustomRateLimiter(this IServiceCollection services)
@@ -70,6 +73,7 @@ public static class ApplicationServiceExtensions
                 await context.HttpContext.Response.WriteAsync(mensaje, token);
             };
 
+            // Aquí no se define GlobalLimiter
             options.AddPolicy("ipLimiter", httpContext =>
             {
                 var ip = httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
@@ -81,14 +85,17 @@ public static class ApplicationServiceExtensions
                     QueueProcessingOrder = QueueProcessingOrder.OldestFirst
                 });
             });
+            
         });
 
         return services;
     }
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
+        //Configuration from AppSettings
         services.Configure<JWT>(configuration.GetSection("JWT"));
 
+        //Adding Athentication - JWT
         _ = services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -110,18 +117,29 @@ public static class ApplicationServiceExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]!))
                 };
             });
-
+        // 3. Authorization – Policies
         services.AddAuthorization(options =>
         {
-
-            options.AddPolicy("Adminstradores", policy =>
+            // Política que exige rol Admin
+            options.AddPolicy("Admins", policy =>
                 policy.RequireRole("Administrator"));
 
-            options.AddPolicy("Mecanicos", policy =>
-                policy.RequireRole("Mecanico"));
+            options.AddPolicy("Others", policy =>
+                policy.RequireRole("Other"));
 
-            options.AddPolicy("Sectretarios", policy =>
-                policy.RequireRole("Secretario"));
+            options.AddPolicy("Pro", policy =>
+                policy.RequireRole("Professional"));
+
+            // Política que exige claim Subscription = "Premium"
+            options.AddPolicy("Professional", policy =>
+                policy.RequireClaim("Subscription", "Premium"));
+
+            // Política compuesta: rol Admin o claim Premium
+            options.AddPolicy("OtherOPremium", policy =>
+                policy.RequireAssertion(context =>
+                    context.User.IsInRole("Other")
+                || context.User.HasClaim(c =>
+                        c.Type == "Subscription" && c.Value == "Premium")));
         });
     }
     public static void AddValidationErrors(this IServiceCollection services)

@@ -16,9 +16,10 @@ public class OrdenServicioProfile : Profile
         CreateMap<CreateOrdenServicioDto, OrdenServicio>()
             .ConstructUsing(src => new OrdenServicio(
                 src.TipoServicio,
+                src.FechaIngreso,          
                 src.FechaEstimadaEntrega,
                 src.Estado,
-                src.UsuarioId,
+                src.UserMemberId,
                 src.VehiculoId
             ));
     }

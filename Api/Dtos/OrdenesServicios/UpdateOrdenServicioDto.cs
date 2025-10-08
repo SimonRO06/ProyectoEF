@@ -5,4 +5,4 @@ using System.Threading.Tasks;
 using Domain.Enums;
 
 namespace Api.Dtos.OrdenesServicios;
-public record UpdateOrdenServicioDto( TipoServicio TipoServicio, DateTime FechaEstimadaEntrega, Estado Estado);
+public record UpdateOrdenServicioDto( TipoServicio TipoServicio,DateTime FechaIngreso, DateTime FechaEstimadaEntrega, Estado Estado);

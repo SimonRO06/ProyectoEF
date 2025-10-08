@@ -26,7 +26,7 @@ public class OrdenesServiciosController : BaseApiController
     [HttpGet("all")]
     public async Task<ActionResult<IEnumerable<OrdenServicioDto>>> GetAll(CancellationToken ct)
     {
-        var ordeneservicios = await _unitofwork.OrdenesServicios.GetAllAsync(ct); // necesitas este método en IProductRepository
+        var ordeneservicios = await _unitofwork.OrdenesServicios.GetAllAsync(ct); 
         var dto = _mapper.Map<IEnumerable<OrdenServicioDto>>(ordeneservicios);
         return Ok(dto);
     }

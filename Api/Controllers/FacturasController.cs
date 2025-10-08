@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.RateLimiting;
 namespace Api.Controllers;
 
 [EnableRateLimiting("ipLimiter")]
-public class FacturasController
+public class FacturasController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitofwork;

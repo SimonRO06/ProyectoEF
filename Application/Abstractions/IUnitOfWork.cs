@@ -11,10 +11,11 @@ public interface IUnitOfWork
     IDetalleOrdenRepository DetallesOrdenes { get; }
     IFacturaRepository Facturas { get; }
     IMarcaRepository Marcas { get; }
+    IModeloRepository Modelos { get; }
     IOrdenServicioRepository OrdenesServicios { get; }
     IPagoRepository Pagos { get; }
     IRepuestoRepository Repuestos { get; }
-    IUsuarioRepository Usuarios { get; }
+    IUserMemberService UserMembers { get; }
     IVehiculoRepository Vehiculos { get; }
     IUserMemberRolService UserMemberRoles { get; }
     IRolService Roles { get; }
