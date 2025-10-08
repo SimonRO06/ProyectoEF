@@ -23,7 +23,7 @@ public class RolRepository(AppDbContext db) : IRolService
         if (!string.IsNullOrWhiteSpace(search))
         {
             var term = $"%{search.Trim()}%";
-            query = query.Where(p => EF.Functions.ILike(p.Nombre, term));
+            query = query.Where(p => EF.Functions.ILike(p.Name, term));
         }
         return query.CountAsync(ct);
     }
