@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Abstractions;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence.Repositories
-public sealed class VehiculotRepository(AppDbContext db) : IVehiculotRepository
+namespace Infrastructure.Persistence.Repositories;
+public class VehiculoRepository : IVehiculoRepository
 {
     private readonly AppDbContext _context;
 
@@ -18,74 +19,90 @@ public sealed class VehiculotRepository(AppDbContext db) : IVehiculotRepository
     public async Task<Vehiculo?> GetByIdAsync(Guid id, CancellationToken ct = default)
     {
         return await _context.Vehiculos
-            .Include(c => c.Region)
-            .ThenInclude(r => r.Vehiculo)
-            .FirstOrDefaultAsync(c => c.Id == id, ct);
+            .Include(v => v.Cliente)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(v => v.Id == id, ct);
+    }
+
+    public async Task<Vehiculo?> GetByVinAsync(string numeroSerie, CancellationToken ct = default)
+    {
+        return await _context.Vehiculos
+            .Include(v => v.Cliente)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(v => v.NumeroSerie == numeroSerie, ct);
+    }
+
+    public async Task<IReadOnlyList<Vehiculo>> GetByCustomerIdAsync(Guid clienteId, CancellationToken ct = default)
+    {
+        return await _context.Vehiculos
+            .Where(v => v.ClienteId == clienteId)
+            .Include(v => v.Cliente)
+            .AsNoTracking()
+            .ToListAsync(ct);
     }
 
     public async Task<IReadOnlyList<Vehiculo>> GetAllAsync(CancellationToken ct = default)
     {
         return await _context.Vehiculos
-            .Include(c => c.Vehiculo)
-            .ThenInclude(r => r.Vehiculo)
+            .Include(v => v.Cliente)
             .AsNoTracking()
             .ToListAsync(ct);
     }
 
-    public async Task<IReadOnlyList<Vehiculo>> GetByRegionIdAsync(Guid regionId, CancellationToken ct = default)
-    {
-        return await _context.Vehiculos
-            .Where(c => c.RegionId == regionId)
-            .Include(c => c.Region)
-            .AsNoTracking()
-            .ToListAsync(ct);
-    }
-
-    public async Task<IReadOnlyList<Vehiculo>> GetPagedAsync(int page, int size, string? q, CancellationToken ct = default)
+    public async Task<IReadOnlyList<Vehiculo>> GetPagedAsync(int page, int size, string? search, CancellationToken ct = default)
     {
         var query = _context.Vehiculos.AsQueryable();
 
-        if (!string.IsNullOrWhiteSpace(q))
+        if (!string.IsNullOrWhiteSpace(search))
         {
-            query = query.Where(c => c.Name!.Contains(q));
+            query = query.Where(v =>
+                v.Modelo.Nombre!.Contains(search) ||
+                v.NumeroSerie!.Contains(search));
         }
 
         return await query
-            .Include(c => c.Region)
-            .OrderBy(c => c.Name)
+            .Include(v => v.Cliente)
+            .OrderBy(v => v.Modelo)
             .Skip((page - 1) * size)
             .Take(size)
             .AsNoTracking()
             .ToListAsync(ct);
     }
 
-    public async Task<int> CountAsync(string? q, CancellationToken ct = default)
+    public async Task<int> CountAsync(string? search, CancellationToken ct = default)
     {
         var query = _context.Vehiculos.AsQueryable();
 
-        if (!string.IsNullOrWhiteSpace(q))
+        if (!string.IsNullOrWhiteSpace(search))
         {
-            query = query.Where(c => c.Name!.Contains(q));
+            query = query.Where(v =>
+                v.Modelo.Nombre!.Contains(search) ||
+                v.NumeroSerie!.Contains(search));
         }
 
         return await query.CountAsync(ct);
     }
 
-    public async Task AddAsync(Vehiculo Vehiculo, CancellationToken ct = default)
+    public async Task<bool> ExistsVinAsync(string vin, CancellationToken ct = default)
     {
-        await _context.Vehiculos.AddAsync(Vehiculo, ct);
+        return await _context.Vehiculos.AnyAsync(v => v.NumeroSerie == vin, ct);
+    }
+
+    public async Task AddAsync(Vehiculo vehiculo, CancellationToken ct = default)
+    {
+        await _context.Vehiculos.AddAsync(vehiculo, ct);
         await _context.SaveChangesAsync(ct);
     }
 
-    public async Task UpdateAsync(Vehiculo Vehiculo, CancellationToken ct = default)
+    public async Task UpdateAsync(Vehiculo vehiculo, CancellationToken ct = default)
     {
-        _context.Vehiculos.Update(Vehiculo);
+        _context.Vehiculos.Update(vehiculo);
         await _context.SaveChangesAsync(ct);
     }
 
-    public async Task RemoveAsync(Vehiculo Vehiculo, CancellationToken ct = default)
+    public async Task RemoveAsync(Vehiculo vehiculo, CancellationToken ct = default)
     {
-        _context.Vehiculos.Remove(Vehiculo);
+        _context.Vehiculos.Remove(vehiculo);
         await _context.SaveChangesAsync(ct);
     }
 }
