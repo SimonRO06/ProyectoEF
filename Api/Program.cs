@@ -1,6 +1,8 @@
 using Api.Extensions;
 using Api.Helpers.Errors;
+using Application.Abstractions;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +18,7 @@ builder.Services.AddJwt(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    string connectionString = builder.Configuration.GetConnectionString("PostgresLocal")!;
+    string connectionString = builder.Configuration.GetConnectionString("Postgres")!;
     options.UseNpgsql(connectionString);
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
@@ -30,6 +32,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         : configuration.GetConnectionString("PostgresLocal"); // cuando está local
     options.UseNpgsql(conn);
 });
+
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IDetalleOrdenRepository, DetalleOrdenRepository>();
+builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
+builder.Services.AddScoped<IMarcaRepository, MarcaRepository>();
+builder.Services.AddScoped<IModeloRepository, ModeloRepository>();
+builder.Services.AddScoped<IOrdenServicioRepository, OrdenServicioRepository>();
+builder.Services.AddScoped<IPagoRepository, PagoRepository>();
+builder.Services.AddScoped<IRepuestoRepository, RepuestoRepository>();
+builder.Services.AddScoped<IVehiculoRepository, VehiculoRepository>();
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();

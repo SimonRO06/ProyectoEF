@@ -13,11 +13,14 @@ public class ModelosController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitofwork;
+    private readonly IModeloRepository _repository;
 
-    public ModelosController(IMapper mapper, IUnitOfWork unitofwork)
+
+    public ModelosController(IMapper mapper, IUnitOfWork unitofwork, IModeloRepository repository)
     {
         _mapper = mapper;
         _unitofwork = unitofwork;
+        _repository = repository;
     }
 
     [HttpGet("all")]
@@ -39,12 +42,12 @@ public class ModelosController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateModeloDto body, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateModeloDto dto, CancellationToken ct)
     {
-        var product = _mapper.Map<Modelo>(body);
-        await _unitofwork.Modelos.AddAsync(product, ct);
+        var models = new Modelo(dto.Nombre, dto.MarcaId);
+        await _repository.AddAsync(models, ct);
 
-        var dto = _mapper.Map<ModeloDto>(product);
-        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+        var created = new ModeloDto(models.Id, models.Nombre, models.MarcaId);
+        return CreatedAtAction(nameof(GetById), new { id = models.Id }, created);
     }
 }

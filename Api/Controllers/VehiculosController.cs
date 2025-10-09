@@ -13,11 +13,14 @@ public class VehiculosController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitofwork;
+    private readonly IVehiculoRepository _repository;
 
-    public VehiculosController(IMapper mapper, IUnitOfWork unitofwork)
+
+    public VehiculosController(IMapper mapper, IUnitOfWork unitofwork, IVehiculoRepository repository)
     {
         _mapper = mapper;
         _unitofwork = unitofwork;
+        _repository = repository;
     }
 
     [HttpGet("all")]
@@ -39,13 +42,12 @@ public class VehiculosController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateVehiculoDto body, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateVehiculoDto dto, CancellationToken ct)
     {
+        var vehicles = new Vehiculo(dto.Año, dto.NumeroSerie, dto.Kilometraje, dto.ClienteId, dto.ModeloId);
+        await _repository.AddAsync(vehicles, ct);
 
-        var vehiculo = _mapper.Map<Vehiculo>(body);
-        await _unitofwork.Vehiculos.AddAsync(vehiculo, ct);
-
-        var dto = _mapper.Map<VehiculoDto>(vehiculo);
-        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+        var created = new VehiculoDto(vehicles.Id, vehicles.Año, vehicles.NumeroSerie, vehicles.Kilometraje, vehicles.ClienteId, vehicles.ModeloId);
+        return CreatedAtAction(nameof(GetById), new { id = vehicles.Id }, created);
     }
 }

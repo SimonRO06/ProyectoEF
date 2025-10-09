@@ -13,11 +13,14 @@ public class MarcasController : BaseApiController
 {
      private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitofwork;
+    private readonly IMarcaRepository _repository;
 
-    public MarcasController(IMapper mapper, IUnitOfWork unitofwork)
+
+    public MarcasController(IMapper mapper, IUnitOfWork unitofwork, IMarcaRepository repository)
     {
         _mapper = mapper;
         _unitofwork = unitofwork;
+        _repository = repository;
     }
 
     [HttpGet("all")]
@@ -39,13 +42,12 @@ public class MarcasController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateMarcaDto body, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateMarcaDto dto, CancellationToken ct)
     {
+        var brands = new Marca(dto.Nombre);
+        await _repository.AddAsync(brands, ct);
 
-        var marca = _mapper.Map<Marca>(body);
-        await _unitofwork.Marcas.AddAsync(marca, ct);
-
-        var dto = _mapper.Map<MarcaDto>(marca);
-        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+        var created = new MarcaDto(brands.Id, brands.Nombre);
+        return CreatedAtAction(nameof(GetById), new { id = brands.Id }, created);
     }
 }

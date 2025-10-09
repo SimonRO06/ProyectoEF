@@ -8,6 +8,7 @@ using Api.Services;
 using Application.Abstractions;
 using Domain.Entities.Auth;
 using FluentValidation;
+using Infrastructure.Persistence.Repositories;
 using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -45,6 +46,7 @@ public static class ApplicationServiceExtensions
     {
         services.AddScoped<IPasswordHasher<UserMember>, PasswordHasher<UserMember>>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IClienteRepository, ClienteRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));

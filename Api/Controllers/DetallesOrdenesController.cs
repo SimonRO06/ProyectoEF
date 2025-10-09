@@ -16,11 +16,14 @@ public class DetallesOrdenesController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitofwork;
+    private readonly IDetalleOrdenRepository _repository;
 
-    public DetallesOrdenesController(IMapper mapper, IUnitOfWork unitofwork)
+
+    public DetallesOrdenesController(IMapper mapper, IUnitOfWork unitofwork, IDetalleOrdenRepository repository)
     {
         _mapper = mapper;
         _unitofwork = unitofwork;
+        _repository = repository;
     }
 
     [HttpGet("all")]
@@ -42,13 +45,12 @@ public class DetallesOrdenesController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateDetalleOrdenDto body, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateDetalleOrdenDto dto, CancellationToken ct)
     {
+        var order_details = new DetalleOrden(dto.Cantidad, dto.CostoUnitario, dto.OrdenServicioId, dto.RepuestoId);
+        await _repository.AddAsync(order_details, ct);
 
-        var product = _mapper.Map<DetalleOrden>(body);
-        await _unitofwork.DetallesOrdenes.AddAsync(product, ct);
-
-        var dto = _mapper.Map<DetalleOrdenDto>(product);
-        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+        var created = new DetalleOrdenDto(order_details.Id, order_details.Cantidad, order_details.CostoUnitario!, order_details.OrdenServicioId!, order_details.RepuestoId!);
+        return CreatedAtAction(nameof(GetById), new { id = order_details.Id }, created);
     }
 }

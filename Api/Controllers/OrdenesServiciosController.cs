@@ -16,13 +16,15 @@ public class OrdenesServiciosController : BaseApiController
 {
         private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitofwork;
+    private readonly IOrdenServicioRepository _repository;
 
-    public OrdenesServiciosController(IMapper mapper, IUnitOfWork unitofwork)
+
+    public OrdenesServiciosController(IMapper mapper, IUnitOfWork unitofwork, IOrdenServicioRepository repository)
     {
         _mapper = mapper;
         _unitofwork = unitofwork;
+        _repository = repository;
     }
-
     [HttpGet("all")]
     public async Task<ActionResult<IEnumerable<OrdenServicioDto>>> GetAll(CancellationToken ct)
     {
@@ -42,12 +44,12 @@ public class OrdenesServiciosController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateOrdenServicioDto body, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateOrdenServicioDto dto, CancellationToken ct)
     {
-        var ordenservicio = _mapper.Map<OrdenServicio>(body);
-        await _unitofwork.OrdenesServicios.AddAsync(ordenservicio, ct);
+        var service_orders = new OrdenServicio(dto.TipoServicio, dto.FechaIngreso, dto.FechaEstimadaEntrega, dto.Estado, dto.UserMemberId, dto.VehiculoId);
+        await _repository.AddAsync(service_orders, ct);
 
-        var dto = _mapper.Map<OrdenServicioDto>(ordenservicio);
-        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+        var created = new OrdenServicioDto(service_orders.Id, service_orders.TipoServicio, service_orders.FechaIngreso, service_orders.FechaEstimadaEntrega, service_orders.Estado, service_orders.UserMemberId, service_orders.VehiculoId);
+        return CreatedAtAction(nameof(GetById), new { id = service_orders.Id }, created);
     }
 }

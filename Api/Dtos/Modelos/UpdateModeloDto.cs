@@ -4,4 +4,4 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Dtos.Modelos;
-public record UpdateModeloDto(string Nombre, DateTime FechaIngreso, Guid ModeloId);
+public record UpdateModeloDto(string Nombre, Guid ModeloId);

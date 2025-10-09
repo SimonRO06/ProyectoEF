@@ -13,11 +13,14 @@ public class RepuestosController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitofwork;
+    private readonly IRepuestoRepository _repository;
 
-    public RepuestosController(IMapper mapper, IUnitOfWork unitofwork)
+
+    public RepuestosController(IMapper mapper, IUnitOfWork unitofwork, IRepuestoRepository repository)
     {
         _mapper = mapper;
         _unitofwork = unitofwork;
+        _repository = repository;
     }
 
     [HttpGet("all")]
@@ -39,13 +42,12 @@ public class RepuestosController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateRepuestoDto body, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateRepuestoDto dto, CancellationToken ct)
     {
+        var spare_parts = new Repuesto(dto.Codigo, dto.Descripcion, dto.CantidadStock, dto.PrecioUnitario);
+        await _repository.AddAsync(spare_parts, ct);
 
-        var product = _mapper.Map<Repuesto>(body);
-        await _unitofwork.Repuestos.AddAsync(product, ct);
-
-        var dto = _mapper.Map<RepuestoDto>(product);
-        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+        var created = new RepuestoDto(spare_parts.Id, spare_parts.Codigo, spare_parts.Descripcion, spare_parts.CantidadStock, spare_parts.PrecioUnitario);
+        return CreatedAtAction(nameof(GetById), new { id = spare_parts.Id }, created);
     }
 }

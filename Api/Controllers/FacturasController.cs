@@ -13,11 +13,14 @@ public class FacturasController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitofwork;
+    private readonly IFacturaRepository _repository;
 
-    public FacturasController(IMapper mapper, IUnitOfWork unitofwork)
+
+    public FacturasController(IMapper mapper, IUnitOfWork unitofwork, IFacturaRepository repository)
     {
         _mapper = mapper;
         _unitofwork = unitofwork;
+        _repository = repository;
     }
 
     [HttpGet("all")]
@@ -39,13 +42,12 @@ public class FacturasController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateFacturaDto body, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateFacturaDto dto, CancellationToken ct)
     {
+        var invoices = new Factura(dto.FechaEmision, dto.Total, dto.OrdenServicioId);
+        await _repository.AddAsync(invoices, ct);
 
-        var factura = _mapper.Map<Factura>(body);
-        await _unitofwork.Facturas.AddAsync(factura, ct);
-
-        var dto = _mapper.Map<FacturaDto>(factura);
-        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+        var created = new FacturaDto(invoices.Id, invoices.FechaEmision, invoices.Total!, invoices.OrdenServicioId!);
+        return CreatedAtAction(nameof(GetById), new { id = invoices.Id }, created);
     }
 }

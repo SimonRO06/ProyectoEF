@@ -13,11 +13,14 @@ public class PagosController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitofwork;
+    private readonly IPagoRepository _repository;
 
-    public PagosController(IMapper mapper, IUnitOfWork unitofwork)
+
+    public PagosController(IMapper mapper, IUnitOfWork unitofwork, IPagoRepository repository)
     {
         _mapper = mapper;
         _unitofwork = unitofwork;
+        _repository = repository;
     }
 
     [HttpGet("all")]
@@ -39,12 +42,12 @@ public class PagosController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreatePagoDto body, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreatePagoDto dto, CancellationToken ct)
     {
-        var pago = _mapper.Map<Pago>(body);
-        await _unitofwork.Pagos.AddAsync(pago, ct);
+        var payments = new Pago(dto.FechaPago, dto.Monto, dto.MetodoPago, dto.FacturaId);
+        await _repository.AddAsync(payments, ct);
 
-        var dto = _mapper.Map<PagoDto>(pago);
-        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+        var created = new PagoDto(payments.Id, payments.Monto, payments.FechaPago, payments.MetodoPago, payments.FacturaId);
+        return CreatedAtAction(nameof(GetById), new { id = payments.Id }, created);
     }
 }

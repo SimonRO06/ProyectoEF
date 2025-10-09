@@ -13,11 +13,16 @@ public class ClientesController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitofwork;
-    public ClientesController(IMapper mapper, IUnitOfWork unitofwork)
+    private readonly IClienteRepository _repository;
+
+
+    public ClientesController(IMapper mapper, IUnitOfWork unitofwork, IClienteRepository repository)
     {
         _mapper = mapper;
         _unitofwork = unitofwork;
+        _repository = repository;
     }
+
     [HttpGet("all")]
     public async Task<ActionResult<IEnumerable<ClienteDto>>> GetAll(CancellationToken ct)
     {
@@ -37,12 +42,12 @@ public class ClientesController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateClienteDto body, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateClienteDto dto, CancellationToken ct = default)
     {
-        var cliente = _mapper.Map<Cliente>(body);
-        await _unitofwork.Clientes.AddAsync(cliente, ct);
+        var customer = new Cliente(dto.Nombre, dto.Correo, dto.Telefono);
+        await _repository.AddAsync(customer, ct);
 
-        var dto = _mapper.Map<ClienteDto>(cliente);
-        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+        var created = new ClienteDto(customer.Id, customer.Nombre!, customer.Correo!, customer.Telefono ?? "");
+        return CreatedAtAction(nameof(GetById), new { id = customer.Id }, created);
     }
 }

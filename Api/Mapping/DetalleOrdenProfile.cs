@@ -18,7 +18,7 @@ public class DetalleOrdenProfile : Profile
                 src.Cantidad,
                 src.CostoUnitario,
                 src.OrdenServicioId,
-                src.RespuestaId
+                src.RepuestoId
             ));
     }
 }
