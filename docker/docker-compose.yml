@@ -2,32 +2,43 @@ services:
   db:
     image: postgres:16
     environment:
-      POSTGRES_DB: trabajoefs  
+      POSTGRES_DB: proyectoef
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5433:5432"
     volumes:
-      - trabajoefs_data:/var/lib/postgresql/data 
+      - proyectoef_data:/var/lib/postgresql/data  # Cambié el nombre del volumen a "trabajoef_data"
+      - proyectoef_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d trabajoefs"] 
+      test: ["CMD-SHELL", "pg_isready -U postgres -d proyectoef"]  # Cambié el nombre de la base de datos a "trabajoef"
       interval: 5s
       timeout: 3s
       retries: 10
 
   api:
     build:
-      context: ..                      
-      dockerfile: Api/Dockerfile 
+      context: ..                   
+      dockerfile: Api/Dockerfile  
     environment:
       ASPNETCORE_HTTP_PORTS: "8080"
       ASPNETCORE_ENVIRONMENT: "Development"
-      ConnectionStrings__Default: "Host=db;Port=5432;Database=trabajoefs;Username=postgres;Password=postgres"
+      ConnectionStrings__Default: "Host=db;Port=5432;Database=proyectoef;Username=postgres;Password=postgres"  # Cambié la base de datos a "trabajoef"
     ports:
       - "8081:8080"
     depends_on:
       db:
         condition: service_healthy
+    
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
 
 volumes:
-  trabajoefs_data:
+  proyectoef_data:
