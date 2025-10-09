@@ -6,4 +6,4 @@ using Domain.Enums;
 using MediatR;
 
 namespace Application.OrdenesServicios;
-public sealed record CreateOrdenServicio(TipoServicio TipoServicio, DateTime FechaIngreso, DateTime FechaEstimadaEntrega, Estado Estado, Guid UsuarioId, Guid VehiculoId) : IRequest<Guid>;
+public sealed record CreateOrdenServicio(TipoServicio TipoServicio, DateTime FechaIngreso, DateTime FechaEstimadaEntrega, Estado Estado, int UserMemberId, Guid VehiculoId) : IRequest<Guid>;

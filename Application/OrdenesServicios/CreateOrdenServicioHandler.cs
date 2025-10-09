@@ -11,9 +11,9 @@ public sealed class CreateOrdenServicioHandler(IOrdenServicioRepository repo) : 
 {
     public async Task<Guid> Handle(CreateOrdenServicio req, CancellationToken ct)
     {
-        var ordenServicio = new OrdenServicio(req.TipoServicio, req.FechaIngreso, req.FechaEstimadaEntrega, req.Estado, req.UsuarioId, req.VehiculoId)
+        var ordenServicio = new OrdenServicio(req.TipoServicio, req.FechaIngreso, req.FechaEstimadaEntrega, req.Estado, req.UserMemberId, req.VehiculoId)
         {
-            UsuarioId = req.UsuarioId,
+            UserMemberId = req.UserMemberId,
             VehiculoId = req.VehiculoId
         };
 
