@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Abstractions;
 using Application.Abstractions.Auth;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Repositories;
 using Infrastructure.Persistence.Repositories.Auth;
 
 namespace Infrastructure.UnitOfWork;

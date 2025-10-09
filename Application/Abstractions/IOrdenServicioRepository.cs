@@ -9,7 +9,7 @@ public interface IOrdenServicioRepository
 {
     Task<OrdenServicio?> GetByIdAsync(Guid id, CancellationToken ct = default);
     Task<IReadOnlyList<OrdenServicio>> GetAllAsync(CancellationToken ct = default);
-    Task<IReadOnlyList<OrdenServicio>> GetByUsuarioIdAsync(Guid UsuarioId, CancellationToken ct = default);
+    Task<IReadOnlyList<OrdenServicio>> GetByUserMemberIdAsync(int userMemberId, CancellationToken ct = default);
     Task<IReadOnlyList<OrdenServicio>> GetByVehiculoIdAsync(Guid VehiculoId, CancellationToken ct = default);
     Task AddAsync(OrdenServicio ordenServicio, CancellationToken ct = default);
     Task UpdateAsync(OrdenServicio ordenServicio, CancellationToken ct = default);

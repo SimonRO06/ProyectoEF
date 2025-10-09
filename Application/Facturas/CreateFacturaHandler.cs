@@ -11,7 +11,7 @@ public sealed class CreateFacturaHandler(IFacturaRepository repo) : IRequestHand
 {
     public async Task<Guid> Handle(CreateFactura req, CancellationToken ct)
     {
-        var factura = new Factura(req.FechaEmision, req.Impuestos, req.Total, req.OrdenServicioId)
+        var factura = new Factura(req.FechaEmision, req.Total, req.OrdenServicioId)
         {
             OrdenServicioId = req.OrdenServicioId
         };

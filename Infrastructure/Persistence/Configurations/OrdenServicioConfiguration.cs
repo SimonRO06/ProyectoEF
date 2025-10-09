@@ -21,11 +21,11 @@ public class OrdenServicioConfiguration : IEntityTypeConfiguration<OrdenServicio
 
         builder.Property(os => os.FechaIngreso)
             .IsRequired()
-            .HasColumnType("datetime2");
+            .HasColumnType("timestamp with time zone");
 
         builder.Property(os => os.FechaEstimadaEntrega)
             .IsRequired()
-            .HasColumnType("datetime2");
+            .HasColumnType("timestamp with time zone");
 
         builder.Property(os => os.Estado)
             .IsRequired()

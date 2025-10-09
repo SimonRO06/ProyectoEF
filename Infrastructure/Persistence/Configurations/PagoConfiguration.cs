@@ -20,7 +20,7 @@ public class PagoConfiguration : IEntityTypeConfiguration<Pago>
 
         builder.Property(p => p.FechaPago)
             .IsRequired()
-            .HasColumnType("datetime2");
+            .HasColumnType("timestamp with time zone");
 
         builder.Property(p => p.MetodoPago)
             .IsRequired()

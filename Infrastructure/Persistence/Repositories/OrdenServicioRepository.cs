@@ -37,10 +37,10 @@ public class OrdenServicioRepository : IOrdenServicioRepository
             .ToListAsync(ct);
     }
 
-    public async Task<IReadOnlyList<OrdenServicio>> GetByUsuarioIdAsync(Guid usuarioId, CancellationToken ct = default)
+    public async Task<IReadOnlyList<OrdenServicio>> GetByUserMemberIdAsync(int userMemberId, CancellationToken ct = default)
     {
         return await _context.OrdenesServicios
-            .Where(o => o.UsuarioId == usuarioId)
+            .Where(o => o.UserMemberId == userMemberId)
             .Include(o => o.Vehiculo)
             .AsNoTracking()
             .ToListAsync(ct);

@@ -8,9 +8,9 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - proyectoef_data:/var/lib/postgresql/data  # Cambié el nombre del volumen a "trabajoef_data"
+      - proyectoef_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d proyectoef"]  # Cambié el nombre de la base de datos a "trabajoef"
+      test: ["CMD-SHELL", "pg_isready -U postgres -d proyectoef"]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -28,6 +28,16 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
 
 volumes:
   proyectoef_data:

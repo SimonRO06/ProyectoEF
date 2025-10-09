@@ -16,7 +16,7 @@ public class FacturaConfiguration : IEntityTypeConfiguration<Factura>
         builder.HasKey(p => p.Id);
         builder.Property(p => p.FechaEmision)
        .IsRequired()
-       .HasColumnType("datetime2");
+       .HasColumnType("timestamp with time zone");
 
         builder.Property(p => p.Total)
             .IsRequired()
