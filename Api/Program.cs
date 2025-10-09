@@ -39,9 +39,16 @@ app.UseCors("Dinamica");
 app.UseHttpsRedirection();
 app.UseRateLimiter();
 
+app.UseHttpsRedirection();
+app.UseRateLimiter();
 app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+using var scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+db.Database.Migrate();
+
 
 app.Run();

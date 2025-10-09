@@ -24,19 +24,20 @@ public class VehiculoRepository : IVehiculoRepository
             .FirstOrDefaultAsync(v => v.Id == id, ct);
     }
 
-    public async Task<Vehiculo?> GetByVinAsync(string numeroSerie, CancellationToken ct = default)
-    {
-        return await _context.Vehiculos
-            .Include(v => v.Cliente)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(v => v.NumeroSerie == numeroSerie, ct);
-    }
-
-    public async Task<IReadOnlyList<Vehiculo>> GetByCustomerIdAsync(Guid clienteId, CancellationToken ct = default)
+    public async Task<IReadOnlyList<Vehiculo>> GetByClienteIdAsync(Guid clienteId, CancellationToken ct = default)
     {
         return await _context.Vehiculos
             .Where(v => v.ClienteId == clienteId)
             .Include(v => v.Cliente)
+            .AsNoTracking()
+            .ToListAsync(ct);
+    }
+
+    public async Task<IReadOnlyList<Vehiculo>> GetByModeloIdAsync(Guid modeloId, CancellationToken ct = default)
+    {
+        return await _context.Vehiculos
+            .Where(v => v.ModeloId == modeloId)
+            .Include(v => v.Modelo)
             .AsNoTracking()
             .ToListAsync(ct);
     }
