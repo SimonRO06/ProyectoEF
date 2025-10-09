@@ -16,6 +16,12 @@ public class ModeloRepository : IModeloRepository
         _context = context;
     }
 
+    public async Task<Modelo?> GetByIdAsync(Guid id, CancellationToken ct = default)
+    {
+        return await _context.Modelos
+            .FirstOrDefaultAsync(m => m.Id == id, ct);
+    }
+
     public async Task<IReadOnlyList<Modelo>> GetAllAsync(CancellationToken ct = default)
     {
         return await _context.Modelos
