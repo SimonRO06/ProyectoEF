@@ -326,4 +326,16 @@ public class UserService : IUserService
         dataUserDto.RefreshTokenExpiration = newRefreshToken.Expires;
         return dataUserDto;
     }
+    public async Task<IEnumerable<UserMember>> GetAllAsync(CancellationToken ct = default)
+    {
+        var users = await _unitOfWork.UserMembers.GetAllAsync(ct);
+        return users;
+    }
+    public async Task<UserMember?> GetByIdAsync(int id, CancellationToken ct = default)
+    {
+        var user = await _unitOfWork.UserMembers.GetByIdAsync(id, ct);
+        return user;
+    }
+
+
 }

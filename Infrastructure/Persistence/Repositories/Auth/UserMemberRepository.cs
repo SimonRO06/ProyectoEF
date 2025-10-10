@@ -49,6 +49,10 @@ public class UserMemberRepository(AppDbContext db) : IUserMemberService
         return user;
     }
 
+    public async Task<IEnumerable<UserMember>> GetAllAsync(CancellationToken ct)
+{
+    return await db.UsersMembers.AsNoTracking().ToListAsync(ct);
+}
 
     public async Task AddAsync(UserMember usermember, CancellationToken ct = default)
     {
