@@ -46,6 +46,7 @@ public class PagosController : BaseApiController
     {
         var payments = new Pago(dto.FechaPago, dto.Monto, dto.MetodoPago, dto.FacturaId);
         await _repository.AddAsync(payments, ct);
+        await _unitofwork.SaveChangesAsync(ct);
 
         var created = new PagoDto(payments.Id, payments.Monto, payments.FechaPago, payments.MetodoPago, payments.FacturaId);
         return CreatedAtAction(nameof(GetById), new { id = payments.Id }, created);

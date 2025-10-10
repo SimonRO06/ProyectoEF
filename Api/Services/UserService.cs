@@ -59,7 +59,7 @@ public class UserService : IUserService
                         Description = "Default role"
                     };
                     await _unitOfWork.Roles.AddAsync(nuevoRol);
-                    await _unitOfWork.SaveChanges();
+                    await _unitOfWork.SaveChangesAsync();
                     rolPredeterminado = nuevoRol;
                 }
                 catch
@@ -78,7 +78,7 @@ public class UserService : IUserService
             {
                 usuario.Rols.Add(rolPredeterminado);
                 await _unitOfWork.UserMembers.AddAsync(usuario);
-                await _unitOfWork.SaveChanges();
+                await _unitOfWork.SaveChangesAsync();
 
                 return $"El usuario  {registerDto.Username} ha sido registrado exitosamente";
             }
@@ -148,7 +148,7 @@ public class UserService : IUserService
             usuario.RefreshTokens.Add(refresh);
 
             await _unitOfWork.UserMembers.UpdateAsync(usuario, ct);
-            await _unitOfWork.SaveChanges(ct);
+            await _unitOfWork.SaveChangesAsync(ct);
         }, ct);
 
         // 6) Emitir JWT (usa tu CreateJwtToken existente)
@@ -256,7 +256,7 @@ public class UserService : IUserService
                         Description = $"{roleName} role"
                     };
                     await _unitOfWork.Roles.AddAsync(nuevoRol);
-                    await _unitOfWork.SaveChanges();
+                    await _unitOfWork.SaveChangesAsync();
                     rolExists = nuevoRol;
                 }
                 catch
@@ -277,7 +277,7 @@ public class UserService : IUserService
             {
                 user.Rols.Add(rolExists);
                 await _unitOfWork.UserMembers.UpdateAsync(user);
-                await _unitOfWork.SaveChanges();
+                await _unitOfWork.SaveChangesAsync();
             }
 
             return $"Role {roleName} added to user {model.Username} successfully.";
@@ -312,7 +312,7 @@ public class UserService : IUserService
         var newRefreshToken = CreateRefreshToken();
         usuario.RefreshTokens.Add(newRefreshToken);
         await _unitOfWork.UserMembers.UpdateAsync(usuario);
-        await _unitOfWork.SaveChanges();
+        await _unitOfWork.SaveChangesAsync();
         //Generate a new Json Web Token
         dataUserDto.IsAuthenticated = true;
         JwtSecurityToken jwtSecurityToken = CreateJwtToken(usuario);

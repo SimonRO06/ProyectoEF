@@ -46,6 +46,7 @@ public class VehiculosController : BaseApiController
     {
         var vehicles = new Vehiculo(dto.Año, dto.NumeroSerie, dto.Kilometraje, dto.ClienteId, dto.ModeloId);
         await _repository.AddAsync(vehicles, ct);
+        await _unitofwork.SaveChangesAsync(ct);
 
         var created = new VehiculoDto(vehicles.Id, vehicles.Año, vehicles.NumeroSerie, vehicles.Kilometraje, vehicles.ClienteId, vehicles.ModeloId);
         return CreatedAtAction(nameof(GetById), new { id = vehicles.Id }, created);

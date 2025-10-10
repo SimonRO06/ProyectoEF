@@ -46,6 +46,7 @@ public class ModelosController : BaseApiController
     {
         var models = new Modelo(dto.Nombre, dto.MarcaId);
         await _repository.AddAsync(models, ct);
+        await _unitofwork.SaveChangesAsync(ct);
 
         var created = new ModeloDto(models.Id, models.Nombre, models.MarcaId);
         return CreatedAtAction(nameof(GetById), new { id = models.Id }, created);

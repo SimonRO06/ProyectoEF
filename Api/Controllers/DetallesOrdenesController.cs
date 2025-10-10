@@ -49,6 +49,7 @@ public class DetallesOrdenesController : BaseApiController
     {
         var order_details = new DetalleOrden(dto.Cantidad, dto.CostoUnitario, dto.OrdenServicioId, dto.RepuestoId);
         await _repository.AddAsync(order_details, ct);
+        await _unitofwork.SaveChangesAsync(ct);
 
         var created = new DetalleOrdenDto(order_details.Id, order_details.Cantidad, order_details.CostoUnitario!, order_details.OrdenServicioId!, order_details.RepuestoId!);
         return CreatedAtAction(nameof(GetById), new { id = order_details.Id }, created);

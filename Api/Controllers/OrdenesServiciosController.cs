@@ -48,6 +48,7 @@ public class OrdenesServiciosController : BaseApiController
     {
         var service_orders = new OrdenServicio(dto.TipoServicio, dto.FechaIngreso, dto.FechaEstimadaEntrega, dto.Estado, dto.UserMemberId, dto.VehiculoId);
         await _repository.AddAsync(service_orders, ct);
+        await _unitofwork.SaveChangesAsync(ct);
 
         var created = new OrdenServicioDto(service_orders.Id, service_orders.TipoServicio, service_orders.FechaIngreso, service_orders.FechaEstimadaEntrega, service_orders.Estado, service_orders.UserMemberId, service_orders.VehiculoId);
         return CreatedAtAction(nameof(GetById), new { id = service_orders.Id }, created);

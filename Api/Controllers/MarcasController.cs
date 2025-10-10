@@ -46,6 +46,7 @@ public class MarcasController : BaseApiController
     {
         var brands = new Marca(dto.Nombre);
         await _repository.AddAsync(brands, ct);
+        await _unitofwork.SaveChangesAsync(ct);
 
         var created = new MarcaDto(brands.Id, brands.Nombre);
         return CreatedAtAction(nameof(GetById), new { id = brands.Id }, created);

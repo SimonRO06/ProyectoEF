@@ -46,6 +46,7 @@ public class RepuestosController : BaseApiController
     {
         var spare_parts = new Repuesto(dto.Codigo, dto.Descripcion, dto.CantidadStock, dto.PrecioUnitario);
         await _repository.AddAsync(spare_parts, ct);
+        await _unitofwork.SaveChangesAsync(ct);
 
         var created = new RepuestoDto(spare_parts.Id, spare_parts.Codigo, spare_parts.Descripcion, spare_parts.CantidadStock, spare_parts.PrecioUnitario);
         return CreatedAtAction(nameof(GetById), new { id = spare_parts.Id }, created);

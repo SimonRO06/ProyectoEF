@@ -20,6 +20,6 @@ public interface IUnitOfWork
     IUserMemberRolService UserMemberRoles { get; }
     IRolService Roles { get; }
     // Task<int> SaveAsync();
-    Task<int> SaveChanges(CancellationToken ct = default);
+    Task<int> SaveChangesAsync(CancellationToken ct = default);
     Task ExecuteInTransactionAsync(Func<CancellationToken, Task> operation, CancellationToken ct = default);
 }
