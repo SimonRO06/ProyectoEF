@@ -4,4 +4,4 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Api.Dtos.Vehiculos;
-public record UpdateVehiculoDto( int Año, string NumeroSerie, int Kilometraje, Guid ClienteId, Guid ModeloId);
+public record UpdateVehiculoDto( int Año, string NumeroSerie, int Kilometraje);

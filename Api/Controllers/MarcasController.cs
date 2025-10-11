@@ -51,4 +51,31 @@ public class MarcasController : BaseApiController
         var created = new MarcaDto(brands.Id, brands.Nombre);
         return CreatedAtAction(nameof(GetById), new { id = brands.Id }, created);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateMarcaDto dto, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Marcas.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        // Actualizamos los campos
+        existing.Update(dto.Nombre);
+
+        await _unitofwork.Marcas.UpdateAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Marcas.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        await _unitofwork.Marcas.RemoveAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
 }

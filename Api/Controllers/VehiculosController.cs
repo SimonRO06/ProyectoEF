@@ -51,4 +51,31 @@ public class VehiculosController : BaseApiController
         var created = new VehiculoDto(vehicles.Id, vehicles.Año, vehicles.NumeroSerie, vehicles.Kilometraje, vehicles.ClienteId, vehicles.ModeloId);
         return CreatedAtAction(nameof(GetById), new { id = vehicles.Id }, created);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateVehiculoDto dto, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Vehiculos.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        // Actualizamos los campos
+        existing.Update(dto.Año, dto.NumeroSerie, dto.Kilometraje);
+
+        await _unitofwork.Vehiculos.UpdateAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Vehiculos.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        await _unitofwork.Vehiculos.RemoveAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
 }
