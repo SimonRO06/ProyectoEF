@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251009154258_IniMig")]
+    [Migration("20251011191053_IniMig")]
     partial class IniMig
     {
         /// <inheritdoc />
@@ -123,6 +123,9 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()

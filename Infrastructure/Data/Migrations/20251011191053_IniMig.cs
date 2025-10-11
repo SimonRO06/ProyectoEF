@@ -78,6 +78,7 @@ namespace Infrastructure.Data.Migrations
                     name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "varchar", maxLength: 255, nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: true),
                     createdAt = table.Column<DateTime>(type: "date", nullable: false, defaultValueSql: "CURRENT_DATE"),
                     updatedAt = table.Column<DateTime>(type: "date", nullable: false, defaultValueSql: "CURRENT_DATE")
                 },

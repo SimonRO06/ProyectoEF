@@ -27,70 +27,64 @@ public class UserService : IUserService
     }
     public async Task<string> RegisterAsync(RegisterDto registerDto)
     {
+        // Validación mínima (ya lo hace [Required], pero por seguridad)
+        if (string.IsNullOrWhiteSpace(registerDto.Role))
+            return "Role is required.";
+
         var usuario = new UserMember
         {
             Username = registerDto.Username ?? throw new ArgumentNullException(nameof(registerDto.Username)),
             Email = registerDto.Email ?? throw new ArgumentNullException(nameof(registerDto.Email)),
-            Password = registerDto.Password ?? throw new ArgumentNullException(nameof(registerDto.Password)),
+            // Password lo hasheamos abajo
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
 
-        usuario.Password = _passwordHasher.HashPassword(usuario, registerDto.Password!);
+        usuario.Password = _passwordHasher.HashPassword(usuario, registerDto.Password ?? throw new ArgumentNullException(nameof(registerDto.Password)));
 
         var usuarioExiste = _unitOfWork.UserMembers
-                                    .Find(u => u.Username.ToLower() == registerDto.Username.ToLower())
+                                    .Find(u => u.Username.ToLower() == registerDto.Username!.ToLower())
                                     .FirstOrDefault();
 
-        if (usuarioExiste == null)
+        if (usuarioExiste != null)
+            return $"El usuario {registerDto.Username} ya se encuentra registrado.";
+
+        // --------------- Determinar nombre real del rol ---------------
+        // Si tus option values no coinciden con los nombres en DB, convierte/mapea aquí.
+        // Ejemplo de mapeo simple (ajusta según tus values):
+        string incomingRole = registerDto.Role.Trim();
+        string roleNameToSearch = incomingRole switch
         {
-            var defaultRoleName = UserAuthorization.rol_default.ToString();
-            var rolPredeterminado = _unitOfWork.Roles
-                                    .Find(u => EF.Functions.ILike(u.Name, defaultRoleName))
-                                    .FirstOrDefault();
-            if (rolPredeterminado == null)
-            {
-                try
-                {
-                    // Intenta crear el rol por defecto si no existe
-                    var nuevoRol = new Rol
-                    {
-                        Name = defaultRoleName,
-                        Description = "Default role"
-                    };
-                    await _unitOfWork.Roles.AddAsync(nuevoRol);
-                    await _unitOfWork.SaveChangesAsync();
-                    rolPredeterminado = nuevoRol;
-                }
-                catch
-                {
-                    // Si otro proceso lo creó en paralelo, reintenta obtenerlo
-                    rolPredeterminado = _unitOfWork.Roles
-                                        .Find(u => EF.Functions.ILike(u.Name, defaultRoleName))
-                                        .FirstOrDefault();
-                    if (rolPredeterminado == null)
-                    {
-                        return $"No se encontró ni pudo crearse el rol predeterminado '{defaultRoleName}'.";
-                    }
-                }
-            }
-            try
-            {
-                usuario.Rols.Add(rolPredeterminado);
-                await _unitOfWork.UserMembers.AddAsync(usuario);
-                await _unitOfWork.SaveChangesAsync();
+            "admin" => "Administrador",
+            "secretary" => "Recepcionista",
+            "mechanic" => "Mecanico",
+            _ => incomingRole   // si envías ya el nombre "Administrador" se usa tal cual
+        };
 
-                return $"El usuario  {registerDto.Username} ha sido registrado exitosamente";
-            }
-            catch (Exception ex)
-            {
-                var message = ex.Message;
-                return $"Error: {message}";
-            }
+        // --------------- Buscar rol en la BD (case-insensitive) ---------------
+        var rol = _unitOfWork.Roles
+                    .Find(r => EF.Functions.ILike(r.Name, roleNameToSearch))
+                    .FirstOrDefault();
+
+        if (rol == null)
+        {
+            // Decide: crear rol automáticamente o devolver error. Aquí devolvemos error.
+            return $"El rol '{roleNameToSearch}' no existe.";
         }
-        else
+
+        try
         {
-            return $"El usuario con {registerDto.Username} ya se encuentra registrado.";
+            // Agrega la relación muchos-a-muchos: EF creará la fila en users_rols (user_id, rol_id)
+            usuario.Rols.Add(rol);
+
+            await _unitOfWork.UserMembers.AddAsync(usuario);
+            await _unitOfWork.SaveChangesAsync();
+
+            return $"El usuario {registerDto.Username} ha sido registrado exitosamente con el rol '{rol.Name}'.";
+        }
+        catch (Exception ex)
+        {
+            return $"Error al registrar usuario: {ex.Message}";
         }
     }
 

@@ -2,14 +2,14 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     event.preventDefault();  
 
     // Obtener los valores de los campos
-    const email = document.getElementById("email").value.trim();
+    const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
 
     // Validación simple
     let valid = true;
     
     // Validación de campos vacíos
-    if (!email || !password) {
+    if (!username || !password) {
         alert("Por favor, complete todos los campos.");
         valid = false;
     }
@@ -18,7 +18,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         return; // No enviar el formulario si hay un campo vacío
     }
 
-    fetch("https://localhost:5001/api/users/login", {
+    fetch("http://localhost:5000/api/users/login", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"

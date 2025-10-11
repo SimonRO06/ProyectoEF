@@ -43,7 +43,7 @@ document.getElementById("signUpForm").addEventListener("submit", function(event)
     }
 
     // Si todo es válido, enviamos los datos de registro al backend
-    fetch("https://localhost:5001/api/users/register", {
+    fetch("http://localhost:5000/api/users/register", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
@@ -51,7 +51,8 @@ document.getElementById("signUpForm").addEventListener("submit", function(event)
     body: JSON.stringify({
         email: email,
         username: username,
-        password: password
+        password: password,
+        role: role
     })
     })
     .then(response => {
@@ -71,23 +72,24 @@ document.getElementById("signUpForm").addEventListener("submit", function(event)
 
 });
 
-/* // Función para validar el formato del email
-function validateEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-}
+// Función para validar el formato del email
+
+    function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
 
 // Función para mostrar un mensaje de error junto al campo
-function showErrorMessage(fieldId, message) {
-    const field = document.getElementById(fieldId);
-    const errorMessage = document.createElement('div');
-    errorMessage.classList.add('error-message');
-    errorMessage.textContent = message;
-    field.parentNode.appendChild(errorMessage);
-}
+    function showErrorMessage(fieldId, message) {
+        const field = document.getElementById(fieldId);
+        const errorMessage = document.createElement('div');
+        errorMessage.classList.add('error-message');
+        errorMessage.textContent = message;
+        field.parentNode.appendChild(errorMessage);
+    }
 
 // Función para limpiar los mensajes de error
-function clearErrorMessages() {
-    const errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach(msg => msg.remove());
-} */
+    function clearErrorMessages() {
+        const errorMessages = document.querySelectorAll('.error-message');
+        errorMessages.forEach(msg => msg.remove());
+    }

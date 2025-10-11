@@ -121,6 +121,9 @@ namespace Infrastructure.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("date")
