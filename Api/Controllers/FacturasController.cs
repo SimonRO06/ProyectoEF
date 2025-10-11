@@ -51,4 +51,31 @@ public class FacturasController : BaseApiController
         var created = new FacturaDto(invoices.Id, invoices.FechaEmision, invoices.Total!, invoices.OrdenServicioId!);
         return CreatedAtAction(nameof(GetById), new { id = invoices.Id }, created);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateFacturaDto dto, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Facturas.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        // Actualizamos los campos
+        existing.Update(dto.Total);
+
+        await _unitofwork.Facturas.UpdateAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Facturas.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        await _unitofwork.Facturas.RemoveAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
 }

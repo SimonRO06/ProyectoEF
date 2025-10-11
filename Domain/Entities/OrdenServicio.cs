@@ -25,14 +25,22 @@ public class OrdenServicio
         public virtual ICollection<Factura> Facturas { get; set; } = new HashSet<Factura>();
 
         private OrdenServicio() { }
-        public OrdenServicio(TipoServicio tipoServicio, DateTime fechaIngreso, DateTime fechaEstimadaEntrega, Estado estado, int userMemberId, Guid vehiculoId)
-        {
-            TipoServicio = tipoServicio;
-            FechaIngreso = fechaIngreso;
-            FechaEstimadaEntrega = fechaEstimadaEntrega;
-            Estado = estado;
-            UserMemberId = userMemberId;
-            VehiculoId = vehiculoId;
-        }
+    public OrdenServicio(TipoServicio tipoServicio, DateTime fechaIngreso, DateTime fechaEstimadaEntrega, Estado estado, int userMemberId, Guid vehiculoId)
+    {
+        TipoServicio = tipoServicio;
+        FechaIngreso = fechaIngreso;
+        FechaEstimadaEntrega = fechaEstimadaEntrega;
+        Estado = estado;
+        UserMemberId = userMemberId;
+        VehiculoId = vehiculoId;
+    }
+        
+    public void Update(TipoServicio tipoServicio, DateTime fechaIngreso, DateTime fechaEstimadaEntrega, Estado estado)
+    {
+        TipoServicio = tipoServicio;
+        FechaIngreso = fechaIngreso;
+        FechaEstimadaEntrega = fechaEstimadaEntrega;
+        Estado = estado;
+    }
 
 }

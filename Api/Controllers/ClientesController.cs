@@ -50,4 +50,31 @@ public class ClientesController : BaseApiController
         var created = new ClienteDto(customer.Id, customer.Nombre!, customer.Correo!, customer.Telefono ?? "");
         return CreatedAtAction(nameof(GetById), new { id = customer.Id }, created);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateClienteDto dto, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Clientes.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        // Actualizamos los campos
+        existing.Update(dto.Nombre, dto.Telefono, dto.Correo);
+
+        await _unitofwork.Clientes.UpdateAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Clientes.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        await _unitofwork.Clientes.RemoveAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
 }

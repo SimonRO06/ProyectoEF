@@ -51,4 +51,31 @@ public class RepuestosController : BaseApiController
         var created = new RepuestoDto(spare_parts.Id, spare_parts.Codigo, spare_parts.Descripcion, spare_parts.CantidadStock, spare_parts.PrecioUnitario);
         return CreatedAtAction(nameof(GetById), new { id = spare_parts.Id }, created);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateRepuestoDto dto, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Repuestos.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        // Actualizamos los campos
+        existing.Update(dto.Descripcion, dto.CantidadStock, dto.PrecioUnitario);
+
+        await _unitofwork.Repuestos.UpdateAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Repuestos.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        await _unitofwork.Repuestos.RemoveAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
 }

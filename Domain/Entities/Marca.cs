@@ -12,4 +12,7 @@ public class Marca
     public virtual ICollection<Modelo> Modelos { get; set; } = new HashSet<Modelo>();
     public Marca(string nombre)
     { Nombre = nombre; }
+
+    public void Update(string nombre)
+    { Nombre = nombre; }
 }

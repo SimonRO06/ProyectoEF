@@ -54,4 +54,31 @@ public class DetallesOrdenesController : BaseApiController
         var created = new DetalleOrdenDto(order_details.Id, order_details.Cantidad, order_details.CostoUnitario!, order_details.OrdenServicioId!, order_details.RepuestoId!);
         return CreatedAtAction(nameof(GetById), new { id = order_details.Id }, created);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateDetalleOrdenDto dto, CancellationToken ct)
+    {
+        var existing = await _unitofwork.DetallesOrdenes.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        // Actualizamos los campos
+        existing.Update(dto.Cantidad, dto.CostoUnitario, dto.OrdenServicioId, dto.RepuestoId);
+
+        await _unitofwork.DetallesOrdenes.UpdateAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var existing = await _unitofwork.DetallesOrdenes.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        await _unitofwork.DetallesOrdenes.RemoveAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
 }

@@ -51,4 +51,31 @@ public class PagosController : BaseApiController
         var created = new PagoDto(payments.Id, payments.Monto, payments.FechaPago, payments.MetodoPago, payments.FacturaId);
         return CreatedAtAction(nameof(GetById), new { id = payments.Id }, created);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePagoDto dto, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Pagos.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        // Actualizamos los campos
+        existing.Update(dto.Monto, dto.MetodoPago);
+
+        await _unitofwork.Pagos.UpdateAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Pagos.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        await _unitofwork.Pagos.RemoveAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
 }

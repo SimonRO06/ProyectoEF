@@ -24,4 +24,10 @@ public class Pago
         MetodoPago = metodoPago;
         FacturaId = facturaId;
     }
+
+    public void Update(decimal monto, MetodoPago metodoPago)
+    {
+        Monto = monto;
+        MetodoPago = metodoPago;
+    }
 }

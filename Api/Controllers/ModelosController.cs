@@ -51,4 +51,31 @@ public class ModelosController : BaseApiController
         var created = new ModeloDto(models.Id, models.Nombre, models.MarcaId);
         return CreatedAtAction(nameof(GetById), new { id = models.Id }, created);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateModeloDto dto, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Modelos.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        // Actualizamos los campos
+        existing.Update(dto.Nombre);
+
+        await _unitofwork.Modelos.UpdateAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var existing = await _unitofwork.Modelos.GetByIdAsync(id, ct);
+        if (existing is null) return NotFound();
+
+        await _unitofwork.Modelos.RemoveAsync(existing, ct);
+        await _unitofwork.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
 }

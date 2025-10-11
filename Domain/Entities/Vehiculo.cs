@@ -26,4 +26,8 @@ public class Vehiculo
         ModeloId = modeloId;
     }
 
+    public void Update(int año, string numeroSerie, int kilometraje)
+    {
+        Año = año; NumeroSerie = numeroSerie; Kilometraje = kilometraje;
+    }
 }
