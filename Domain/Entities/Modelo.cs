@@ -16,4 +16,9 @@ public class Modelo
     {
         Nombre = nombre; MarcaId = marcaId;
     }
+
+    public void Update(string nombre)
+    {
+        Nombre = nombre;
+    }
 }

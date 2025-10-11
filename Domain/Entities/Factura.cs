@@ -20,4 +20,9 @@ public class Factura
         OrdenServicioId = ordenServicioId;
     }
 
+    public void Update(decimal total)
+    {
+        Total = total;
+    }
+
 }

@@ -16,4 +16,11 @@ public class Cliente
     private Cliente() { }
     public Cliente(string nombre, string telefono, string correo)
     { Nombre = nombre; Telefono = telefono; Correo = correo; }
+
+    public void Update(string nombre, string telefono, string correo)
+    {
+        Nombre = nombre;
+        Telefono = telefono;
+        Correo = correo;
+    }
 }

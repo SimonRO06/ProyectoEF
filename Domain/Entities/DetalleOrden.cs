@@ -23,4 +23,10 @@ public class DetalleOrden
         Cantidad = cantidad; CostoUnitario = costounitario;
         OrdenServicioId = ordenServicioId; RepuestoId = repuestoId;
     }
+
+    public void Update(int cantidad, decimal costounitario, Guid ordenServicioId, Guid repuestoId)
+    {
+        Cantidad = cantidad; CostoUnitario = costounitario;
+        OrdenServicioId = ordenServicioId; RepuestoId = repuestoId;
+    }
 }
