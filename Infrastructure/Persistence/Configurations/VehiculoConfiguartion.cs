@@ -39,6 +39,11 @@ public class VehiculoConfiguartion : IEntityTypeConfiguration<Vehiculo>
                      .HasForeignKey(o => o.VehiculoId)
                      .OnDelete(DeleteBehavior.SetNull);
 
+              builder.HasMany(c => c.Citas)
+                     .WithOne(v => v.Vehiculo)
+                     .HasForeignKey(c => c.VehiculoId)
+                     .OnDelete(DeleteBehavior.SetNull);
+
               builder.HasIndex(v => v.NumeroSerie)
                    .IsUnique();
 

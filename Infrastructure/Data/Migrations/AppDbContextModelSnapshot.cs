@@ -165,6 +165,37 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("users_rols", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Cita", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ClienteId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("date");
+
+                    b.Property<TimeSpan>("Hora")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Observaciones")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("VehiculoId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.HasIndex("VehiculoId");
+
+                    b.ToTable("meetings", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Cliente", b =>
                 {
                     b.Property<Guid>("Id")
@@ -422,6 +453,25 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("UserMembers");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Cita", b =>
+                {
+                    b.HasOne("Domain.Entities.Cliente", "Cliente")
+                        .WithMany("Citas")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Vehiculo", "Vehiculo")
+                        .WithMany("Citas")
+                        .HasForeignKey("VehiculoId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Vehiculo");
+                });
+
             modelBuilder.Entity("Domain.Entities.DetalleOrden", b =>
                 {
                     b.HasOne("Domain.Entities.OrdenServicio", "OrdenServicio")
@@ -525,6 +575,8 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Cliente", b =>
                 {
+                    b.Navigation("Citas");
+
                     b.Navigation("Vehiculos");
                 });
 
@@ -557,6 +609,8 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Vehiculo", b =>
                 {
+                    b.Navigation("Citas");
+
                     b.Navigation("OrdenesServicios");
                 });
 #pragma warning restore 612, 618

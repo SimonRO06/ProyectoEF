@@ -17,6 +17,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<Pago> Pagos => Set<Pago>();
     public DbSet<Repuesto> Repuestos => Set<Repuesto>();
     public DbSet<Vehiculo> Vehiculos => Set<Vehiculo>();
+    public DbSet<Cita> Citas => Set<Cita>();
     public DbSet<Modelo> Modelos => Set<Modelo>();
     public DbSet<UserMember> UsersMembers => Set<UserMember>();
     public DbSet<Rol> Rols => Set<Rol>();

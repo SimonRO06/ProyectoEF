@@ -42,6 +42,7 @@ builder.Services.AddScoped<IOrdenServicioRepository, OrdenServicioRepository>();
 builder.Services.AddScoped<IPagoRepository, PagoRepository>();
 builder.Services.AddScoped<IRepuestoRepository, RepuestoRepository>();
 builder.Services.AddScoped<IVehiculoRepository, VehiculoRepository>();
+builder.Services.AddScoped<ICitaRepository, CitaRepository>();
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
