@@ -1,0 +1,129 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== ESTRUCTURA ===== */
+body {
+  background-color: #f6f8fa;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header.header {
+  background-color: #04BD7D;
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 1.5rem;
+}
+
+button {
+  background-color: #fff;
+  color: #04BD7D;
+  border: 2px solid #04BD7D;
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: #04BD7D;
+  color: #fff;
+}
+
+/* ===== MAIN ===== */
+main {
+  flex: 1;
+  padding: 20px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== TABLA ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+thead {
+  background-color: #04BD7D;
+  color: #fff;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+  background-color: #f3fdf9;
+}
+
+/* ===== ESTADO ===== */
+.estado {
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 4px 8px;
+}
+
+.estado.pendiente {
+  color: #b97d00;
+}
+
+.estado.en-progreso {
+  color: #007bff;
+}
+
+.estado.completado {
+  color: #04BD7D;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+  header h1 {
+    font-size: 1.2rem;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  tr {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+  }
+
+  th {
+    display: none;
+  }
+}

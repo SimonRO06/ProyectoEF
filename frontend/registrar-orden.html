@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Recepción - Nueva Orden | AutoTallerManager</title>
+
+  <!-- Iconos -->
+  <script src="https://kit.fontawesome.com/a2e8c5f2c8.js" crossorigin="anonymous"></script>
+
+  <!-- Estilos específicos -->
+  <link rel="stylesheet" href="css/registrar-orden.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar (reutiliza look admin) -->
+    <aside class="sidebar">
+      <div>
+        <h2>AutoTaller<span>Manager</span></h2>
+        <nav>
+          <ul>
+            <li class="active"><i class="fas fa-file-signature"></i> Nueva Orden</li>
+            <li><a href="vehiculos.html"><i class="fas fa-car"></i> Vehículos</a></li>
+            <li><a href="clientes.html"><i class="fas fa-user"></i> Clientes</a></li>
+            <li><a href="consultas.html"><i class="fas fa-search"></i> Consultas</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+    </aside>
+
+    <main class="main-content">
+      <header>
+        <h1><i class="fas fa-file-signature"></i> Registrar Orden de Servicio</h1>
+      </header>
+
+      <section class="form-panel">
+        <form id="ordenForm">
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="clienteSelect">Cliente</label>
+              <select id="clienteSelect" required>
+                <option value="">Cargando clientes...</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="vehiculoSelect">Vehículo</label>
+              <select id="vehiculoSelect" required>
+                <option value="">Seleccione un cliente primero</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="tipoServicio">Tipo de Servicio</label>
+              <select id="tipoServicio" required>
+                <option value="">Seleccione...</option>
+                <option value="1">Preventivo</option>
+                <option value="2">Reparación</option>
+                <option value="3">Diagnóstico</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="mecanicoSelect">Mecánico asignado</label>
+              <select id="mecanicoSelect" required>
+                <option value="">Cargando mecánicos...</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descripcion">Descripción del problema / trabajo</label>
+            <textarea id="descripcion" rows="3" placeholder="Describir lo que necesita el cliente..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Repuestos (añadir si aplica)</label>
+            <div id="repuestosList" class="repuestos-list">
+              <!-- líneas dinámicas -->
+            </div>
+            <div class="repuestos-actions">
+              <select id="repuestoSelect">
+                <option value="">Cargando repuestos...</option>
+              </select>
+              <input id="repuestoCantidad" type="number" min="1" value="1" />
+              <button type="button" id="addRepuestoBtn" class="btn-agregar small"><i class="fas fa-plus"></i> Añadir</button>
+            </div>
+            <small class="muted">Si un repuesto está fuera de stock, aparecerá advertencia y no se añadirá.</small>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="fechaEstimada">Fecha estimada de entrega</label>
+              <input id="fechaEstimada" type="date" required />
+            </div>
+
+            <div class="form-group">
+              <label for="kilometrajeInput">Kilometraje</label>
+              <input id="kilometrajeInput" type="number" min="0" required />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn-guardar">Crear Orden</button>
+            <button type="reset" class="btn-cancelar">Limpiar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="list-section">
+        <h2>Órdenes recientes</h2>
+        <div class="table-container">
+          <table id="ordenesTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Vehículo</th>
+                <th>Cliente</th>
+                <th>Tipo</th>
+                <th>Mecánico</th>
+                <th>Estado</th>
+                <th>Fecha Ingreso</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/registrar-oden.js"></script>
+</body>
+</html>

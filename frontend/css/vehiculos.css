@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #f4f6f8;
+  color: #333;
+}
+
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #0f172a;
+  color: #fff;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar h2 span {
+  color: #04bd7d;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #cbd5e1;
+  transition: all 0.2s ease-in-out;
+}
+
+.sidebar ul li:hover {
+  background-color: #1e293b;
+  color: #fff;
+}
+
+.sidebar ul li.active {
+  background-color: #04bd7d;
+  color: #fff;
+  font-weight: 600;
+}
+
+.sidebar a {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn {
+  background-color: #e11d48;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #be123c;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+.btn-agregar {
+  background-color: #04bd7d;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-agregar:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+/* Tabla */
+.tabla-container {
+  margin-top: 25px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #334155;
+}
+
+tr:hover {
+  background-color: #f9fafb;
+}
+
+td button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+td button i {
+  font-size: 16px;
+}
+
+.btn-editar {
+  color: #04bd7d;
+}
+
+.btn-editar:hover {
+  background: rgba(4,189,125,0.1);
+}
+
+.btn-eliminar {
+  color: #e11d48;
+}
+
+.btn-eliminar:hover {
+  background: rgba(225,29,72,0.1);
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  width: 420px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  text-align: center;
+  color: #111827;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-guardar {
+  background: #04bd7d;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-guardar:hover {
+  background: #059669;
+}
+
+.btn-cancelar {
+  background: #e11d48;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-cancelar:hover {
+  background: #be123c;
+}

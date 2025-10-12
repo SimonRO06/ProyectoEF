@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoTallerManager</title>
+  <link rel="icon" type="image/png" href="img/icono.png" />
+  <link rel="stylesheet" href="css/main.css" />
+  <script defer src="js/auth.js"></script>
+  <script src="https://kit.fontawesome.com/a2e8c5f2c8.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="header">
+      <div class="logo">
+        <i class="fa-solid fa-gear"></i> AutoTallerManager
+      </div>
+      <div class="user-info">
+        <span id="userName"></span>
+        <button id="logoutBtn" class="logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <h1 class="welcome">Bienvenido al sistema</h1>
+      <h2 id="userRole" class="role"></h2>
+
+      <div id="menuOptions" class="menu-options">
+        <!-- Opciones dinámicas según el rol -->
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>© 2025 AutoTallerManager. Todos los derechos reservados.</p>
+    </footer>
+  </div>
+</body>
+</html>

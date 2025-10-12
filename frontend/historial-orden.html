@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Historial de Órdenes - AutoTallerManager</title>
+
+  <link rel="stylesheet" href="css/historial-orden.css" />
+  <script src="https://kit.fontawesome.com/a2e8c5f2c8.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <h2>AutoTaller<span>Manager</span></h2>
+        <nav>
+          <ul>
+            <li><a href="registrar-orden.html"><i class="fas fa-file-signature"></i> Nueva Orden</a></li>
+            <li class="active"><i class="fas fa-clock"></i> Historial de Órdenes</li>
+            <li><a href="../admin/vehiculos.html"><i class="fas fa-car"></i> Vehículos</a></li>
+            <li><a href="../admin/clientes.html"><i class="fas fa-user"></i> Clientes</a></li>
+          </ul>
+        </nav>
+      </div>
+      <button id="logoutBtn" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      </button>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <header>
+        <h1><i class="fas fa-clock"></i> Historial de Órdenes</h1>
+        <input type="text" id="searchInput" placeholder="Buscar por cliente, vehículo o estado..." />
+      </header>
+
+      <section class="table-container">
+        <table id="ordenesTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Vehículo</th>
+              <th>Cliente</th>
+              <th>Tipo</th>
+              <th>Mecánico</th>
+              <th>Estado</th>
+              <th>Fecha Ingreso</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Renglones generados dinámicamente -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Detalle -->
+  <div id="detalleModal" class="modal hidden">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2>Detalle de Orden</h2>
+      <div id="detalleOrdenContent"></div>
+    </div>
+  </div>
+
+  <script src="js/historial-orden.js"></script>
+</body>
+</html>

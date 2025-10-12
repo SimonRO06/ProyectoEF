@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Facturas - AutoTallerManager</title>
+  <link rel="stylesheet" href="css/facturas.css" />
+  <script src="https://kit.fontawesome.com/a2e8c5f2c8.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>AutoTaller<span>Manager</span></h2>
+      <nav>
+        <ul>
+          <li><a href="usuarios.html"><i class="fas fa-users"></i> Usuarios</a></li>
+          <li><a href="repuestos.html"><i class="fas fa-tools"></i> Repuestos</a></li>
+          <li><a href="vehiculos.html"><i class="fas fa-car"></i> Vehículos</a></li>
+          <li class="active"><i class="fas fa-file-invoice"></i> Facturas</li>
+          <li><a href="ordenes.html"><i class="fas fa-clipboard-list"></i> Órdenes</a></li>
+        </ul>
+      </nav>
+      <button id="logoutBtn" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      </button>
+    </aside>
+
+    <main class="main-content">
+      <header>
+        <h1><i class="fas fa-file-invoice"></i> Facturas</h1>
+      </header>
+
+      <section class="actions">
+        <input type="text" id="searchFactura" placeholder="Buscar factura, cliente o fecha..." />
+      </section>
+
+      <section class="table-container">
+        <table id="facturasTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Fecha</th>
+              <th>Subtotal</th>
+              <th>Impuestos</th>
+              <th>Total</th>
+              <th>Método de Pago</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Filas generadas dinámicamente -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Detalles -->
+  <div id="detalleModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2>Detalles de la Factura</h2>
+      <div id="detalleFacturaContent"></div>
+    </div>
+  </div>
+
+  <script src="js/facturas.js"></script>
+</body>
+</html>

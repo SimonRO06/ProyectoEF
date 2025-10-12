@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Administrador | AutoTallerManager</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://kit.fontawesome.com/a2e8c5f2c8.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <i class="fa-solid fa-gear"></i>
+        <h2>AutoTaller</h2>
+      </div>
+
+      <nav>
+        <ul>
+          <li class="active"><i class="fa-solid fa-users"></i> Usuarios</li>
+          <li><i class="fa-solid fa-boxes-stacked"></i> Repuestos</li>
+          <li><i class="fa-solid fa-car"></i> Vehículos</li>
+          <li><i class="fa-solid fa-tags"></i> Marcas y Modelos</li>
+          <li><i class="fa-solid fa-file-invoice"></i> Facturas</li>
+          <li><i class="fa-solid fa-list-check"></i> Órdenes</li>
+        </ul>
+      </nav>
+
+      <div class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+      <header>
+        <h1>Bienvenido, Administrador</h1>
+      </header>
+
+      <section id="dashboard-content">
+        <h2>Panel de control</h2>
+        <p>Selecciona una opción del menú para comenzar.</p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Manejo de cambio de secciones (simple por ahora)
+    const menuItems = document.querySelectorAll(".sidebar nav ul li");
+    const content = document.getElementById("dashboard-content");
+
+    menuItems.forEach(item => {
+      item.addEventListener("click", () => {
+        menuItems.forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+
+        const section = item.textContent.trim();
+        content.innerHTML = `<h2>${section}</h2><p>Cargando ${section.toLowerCase()}...</p>`;
+      });
+    });
+  </script>
+</body>
+</html>
