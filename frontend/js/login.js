@@ -1,50 +1,57 @@
-document.getElementById("loginForm").addEventListener("submit", function(event) {
-    event.preventDefault();  
+document.addEventListener("DOMContentLoaded", () => {
+    const ROLE_REDIRECT = {
+    "Administrador": "usuarios.html",
+    "Recepcionista": "recepcionista.html",
+    "Mecanico": "mecanico.html"
+    };
 
-    // Obtener los valores de los campos
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+    document.getElementById("loginForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-    // Validación simple
-    let valid = true;
-    
-    // Validación de campos vacíos
-    if (!username || !password) {
-        alert("Por favor, complete todos los campos.");
-        valid = false;
-    }
+        const username = document.getElementById("username").value.trim(); // usa el campo email como username visual
+        const password = document.getElementById("password").value.trim();
 
-    if (!valid) {
-        return; // No enviar el formulario si hay un campo vacío
-    }
-
-    fetch("http://localhost:5000/api/users/login", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        username: username,
-        password: password
-    })
-    })
-    .then(response => {
-        if (!response.ok) {
-        return response.text().then(text => { throw new Error(text); });
+        if (!username || !password) {
+            alert("Por favor, complete todos los campos.");
+            return;
         }
-        return response.json();
-    })
-    .then(data => {
-        if (data.isAuthenticated) {
-        localStorage.setItem("token", data.token);
-        alert("Login exitoso 🎉 Bienvenido " + data.userName);
-        window.location.href = "main.html";
-        } else {
-        alert("Error: " + data.message);
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/users/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "Error en el inicio de sesión");
+            }
+
+            const data = await response.json();
+
+            // ✅ Guardar token y refresh token
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("refreshToken", data.refreshToken);
+            localStorage.setItem("username", data.userName);
+
+            // ✅ Si tu backend devuelve roles como array
+            const roles = data.roles || [];
+            if (roles.length === 0) {
+                alert("No se detectó ningún rol para este usuario.");
+                return;
+            }
+
+            const role = roles[0];
+            localStorage.setItem("role", role);
+
+            // ✅ Redirigir según el rol
+            const redirectPage = ROLE_REDIRECT[role] || "main.html";
+            alert(`Bienvenido ${data.userName} (${role})`);
+            window.location.href = redirectPage;
+
+        } catch (error) {
+            alert("Error al iniciar sesión: " + error.message);
         }
-    })
-    .catch(error => {
-        alert("Error al iniciar sesión: " + error.message);
     });
-
 });
