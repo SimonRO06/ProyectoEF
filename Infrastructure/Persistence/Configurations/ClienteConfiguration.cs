@@ -30,6 +30,11 @@ public class ClienteConfiguration : IEntityTypeConfiguration<Cliente>
                 .WithOne(c => c.Cliente)
                 .HasForeignKey(v => v.ClienteId)
                 .OnDelete(DeleteBehavior.SetNull); 
+
+        builder.HasMany(c => c.Citas)
+                .WithOne(c => c.Cliente)
+                .HasForeignKey(c => c.ClienteId)
+                .OnDelete(DeleteBehavior.SetNull);
         
         builder.HasIndex(c => c.Correo)
                    .IsUnique();

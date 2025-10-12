@@ -61,6 +61,7 @@ public static class ApplicationServiceExtensions
         services.AddAutoMapper(typeof(PagoProfile).Assembly);
         services.AddAutoMapper(typeof(RepuestoProfile).Assembly);
         services.AddAutoMapper(typeof(VehiculoProfile).Assembly);
+        services.AddAutoMapper(typeof(CitaProfile).Assembly);
     }
     public static IServiceCollection AddCustomRateLimiter(this IServiceCollection services)
     {

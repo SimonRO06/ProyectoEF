@@ -186,6 +186,34 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "meetings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "date", nullable: false),
+                    Hora = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Observaciones = table.Column<string>(type: "text", nullable: false),
+                    ClienteId = table.Column<Guid>(type: "uuid", nullable: false),
+                    VehiculoId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_meetings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_meetings_customers_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_meetings_vehicles_VehiculoId",
+                        column: x => x.VehiculoId,
+                        principalTable: "vehicles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "service_orders",
                 columns: table => new
                 {
@@ -293,6 +321,16 @@ namespace Infrastructure.Data.Migrations
                 column: "OrdenServicioId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_meetings_ClienteId",
+                table: "meetings",
+                column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_meetings_VehiculoId",
+                table: "meetings",
+                column: "VehiculoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_models_MarcaId",
                 table: "models",
                 column: "MarcaId");
@@ -358,6 +396,9 @@ namespace Infrastructure.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "meetings");
+
             migrationBuilder.DropTable(
                 name: "order_details");
 

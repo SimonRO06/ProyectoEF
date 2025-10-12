@@ -18,6 +18,7 @@ public class Vehiculo
     public Guid ModeloId { get; set; }
     public virtual Modelo? Modelo { get; set; }
     public virtual ICollection<OrdenServicio> OrdenesServicios { get; set; } = new HashSet<OrdenServicio>();
+    public virtual ICollection<Cita> Citas { get; set; } = new HashSet<Cita>();
     private Vehiculo() { }
     public Vehiculo(int año, string numeroSerie, int kilometraje, Guid clienteId, Guid modeloId)
     {

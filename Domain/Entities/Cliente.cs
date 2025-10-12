@@ -13,6 +13,7 @@ public class Cliente
     public string Telefono { get; private set; } = null!;
     public string Correo { get; private set; } = null!;
     public virtual ICollection<Vehiculo> Vehiculos { get; set; } = new HashSet<Vehiculo>();
+    public virtual ICollection<Cita> Citas { get; set; } = new HashSet<Cita>();
     private Cliente() { }
     public Cliente(string nombre, string telefono, string correo)
     { Nombre = nombre; Telefono = telefono; Correo = correo; }

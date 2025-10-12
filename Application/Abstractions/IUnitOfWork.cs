@@ -15,6 +15,7 @@ public interface IUnitOfWork
     IOrdenServicioRepository OrdenesServicios { get; }
     IPagoRepository Pagos { get; }
     IRepuestoRepository Repuestos { get; }
+    ICitaRepository Citas { get; }
     IUserMemberService UserMembers { get; }
     IVehiculoRepository Vehiculos { get; }
     IUserMemberRolService UserMemberRoles { get; }
