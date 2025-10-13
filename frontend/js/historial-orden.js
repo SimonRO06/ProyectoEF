@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 🚀 Cargar órdenes desde el backend
   async function cargarOrdenes() {
     try {
-      const res = await fetch("http://localhost:5123/api/Ordenes"); // Ajusta el endpoint
+      const res = await fetch("http://localhost:5000/api/ordenes/all"); // Ajusta el endpoint
       const data = await res.json();
       renderTabla(data);
       searchInput.addEventListener("input", () => filtrarOrdenes(data));

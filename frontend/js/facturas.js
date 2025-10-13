@@ -3,7 +3,7 @@
 // ==========================
 
 // 📦 URL base del backend (ajústala si cambia tu API)
-const API_URL = "http://localhost:5062/api/facturas"; // <-- asegúrate que tu backend use esta ruta
+const API_URL = "http://localhost:5000/api/facturas"; // <-- asegúrate que tu backend use esta ruta
 
 // 🔹 Mapeo del Enum Método de Pago (igual que en tu backend)
 const MetodoPago = {
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 // ==========================
 async function cargarFacturas() {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch("http://localhost:5000/api/facturas");
     if (!response.ok) throw new Error("Error al obtener las facturas");
     const facturas = await response.json();
     renderFacturas(facturas);

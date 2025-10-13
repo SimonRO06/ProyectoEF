@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5191/api/Marcas"; // Ajusta a tu endpoint real
+const API_URL = "http://localhost:5000/api/marcas"; // Ajusta a tu endpoint real
 
 const tabla = document.getElementById("tablaMarcas").querySelector("tbody");
 const modal = document.getElementById("modalMarca");

@@ -53,7 +53,7 @@ class MecanicoApp {
 
     async loadOrdenes() {
         try {
-            const response = await fetch('/api/ordenesservicio', {
+            const response = await fetch('http://localhost:5000/api/ordenesServicios/all', {
                 headers: {
                     'Authorization': `Bearer ${this.token}`
                 }
@@ -213,7 +213,7 @@ class MecanicoApp {
                 userMemberId: parseInt(this.userId)
             };
 
-            const response = await fetch(`/api/ordenesservicio/${this.ordenActual.id}`, {
+            const response = await fetch(`http://localhost:5000/api/ordenesServicios/${this.ordenActual.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -238,7 +238,7 @@ class MecanicoApp {
         if (!this.ordenActual) return;
 
         try {
-            const response = await fetch('/api/facturas/generar', {
+            const response = await fetch('http://localhost:5000/api/facturas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
