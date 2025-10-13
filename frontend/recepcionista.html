@@ -141,22 +141,23 @@
         <section id="nueva-orden" class="seccion">
           <div class="formulario-container">
             <form id="formNuevaOrden" class="formulario-completo">
+              <!-- En la sección de Nueva Orden, cambia el select de cliente por usuario -->
               <div class="grupo-formulario">
-                <h3>Información del Cliente y Vehículo</h3>
-                <div class="campos">
-                  <div class="campo">
-                    <label for="clienteOrden">Seleccionar Cliente</label>
-                    <select id="clienteOrden" required>
-                      <option value="">Seleccione un cliente</option>
-                    </select>
+                  <h3>Información del Usuario y Vehículo</h3>
+                  <div class="campos">
+                      <div class="campo">
+                          <label for="usuarioOrden">Seleccionar Usuario</label>
+                          <select id="usuarioOrden" required>
+                              <option value="">Seleccione un usuario</option>
+                          </select>
+                      </div>
+                      <div class="campo">
+                          <label for="vehiculoOrden">Seleccionar Vehículo</label>
+                          <select id="vehiculoOrden" required>
+                              <option value="">Seleccione un vehículo</option>
+                          </select>
+                      </div>
                   </div>
-                  <div class="campo">
-                    <label for="vehiculoOrden">Seleccionar Vehículo</label>
-                    <select id="vehiculoOrden" required>
-                      <option value="">Seleccione un vehículo</option>
-                    </select>
-                  </div>
-                </div>
               </div>
 
               <div class="grupo-formulario">
