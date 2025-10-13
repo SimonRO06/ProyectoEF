@@ -3,27 +3,268 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel del Recepcionista | AutoTallerManager</title>
+  <title>Panel del Recepcionista - AutoTallerManager</title>
   <link rel="stylesheet" href="css/recepcionista.css">
+  <script src="https://kit.fontawesome.com/a2e8c5f2c8.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <header class="header">
-    <h1>Panel del Recepcionista</h1>
-    <button id="logoutBtn">Cerrar sesión</button>
-  </header>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <h2>AutoTaller<span>Manager</span></h2>
+        <nav>
+          <ul>
+            <li class="active" data-section="inicio">
+              <i class="fas fa-home"></i> Inicio
+            </li>
+            <li data-section="clientes">
+              <i class="fas fa-users"></i> Clientes
+            </li>
+            <li data-section="vehiculos">
+              <i class="fas fa-car"></i> Vehículos
+            </li>
+            <li data-section="ordenes">
+              <i class="fas fa-clipboard-list"></i> Órdenes
+            </li>
+            <li data-section="nueva-orden">
+              <i class="fas fa-plus-circle"></i> Nueva Orden
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <button id="logoutBtn" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      </button>
+    </aside>
 
-  <main>
-    <section class="acciones">
-      <button id="btnClientes">Ver Clientes</button>
-      <button id="btnOrdenes">Ver Órdenes</button>
-      <button id="btnRegistrarOrden">Registrar Nueva Orden</button>
-    </section>
+    <!-- Main Content -->
+    <main class="main-content">
+      <header>
+        <h1 id="tituloSeccion">Panel del Recepcionista</h1>
+        <button id="btnAccionPrincipal" class="btn-agregar hidden">
+          <i class="fas fa-plus"></i> <span id="textoBoton">Nuevo</span>
+        </button>
+      </header>
 
-    <section class="contenido" id="contenido">
-      <p>Selecciona una acción para comenzar.</p>
-    </section>
-  </main>
+      <div class="contenido-dinamico" id="contenidoDinamico">
+        <!-- Sección de Inicio -->
+        <section id="inicio" class="seccion activa">
+          <div class="bienvenida">
+            <h2>¡Bienvenido/a!</h2>
+            <p>Selecciona una opción del menú lateral para comenzar a gestionar.</p>
+            <div class="estadisticas-rapidas">
+              <div class="tarjeta-estadistica">
+                <i class="fas fa-users"></i>
+                <h3>Clientes</h3>
+                <p id="totalClientes">0</p>
+              </div>
+              <div class="tarjeta-estadistica">
+                <i class="fas fa-car"></i>
+                <h3>Vehículos</h3>
+                <p id="totalVehiculos">0</p>
+              </div>
+              <div class="tarjeta-estadistica">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>Órdenes Activas</h3>
+                <p id="totalOrdenes">0</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-  <script src="recepcionista.js"></script>
+        <!-- Sección de Clientes -->
+        <section id="clientes" class="seccion">
+          <div class="tabla-container">
+            <table id="tablaClientes">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
+                  <th>Vehiculos</th>
+                  <th> </th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Se cargan dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Sección de Vehículos -->
+        <section id="vehiculos" class="seccion">
+          <div class="tabla-container">
+            <table id="tablaVehiculos">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cliente</th>
+                  <th>Modelo</th>
+                  <th>Año</th>
+                  <th>Numero Serie</th>
+                  <th>Kilometraje</th>
+                  <th> </th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Se cargan dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Sección de Órdenes -->
+        <section id="ordenes" class="seccion">
+          <div class="tabla-container">
+            <table id="tablaOrdenes">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cliente</th>
+                  <th>Vehículo</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Se cargan dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Sección de Nueva Orden -->
+        <section id="nueva-orden" class="seccion">
+          <div class="formulario-container">
+            <form id="formNuevaOrden" class="formulario-completo">
+              <div class="grupo-formulario">
+                <h3>Información del Cliente y Vehículo</h3>
+                <div class="campos">
+                  <div class="campo">
+                    <label for="clienteOrden">Seleccionar Cliente</label>
+                    <select id="clienteOrden" required>
+                      <option value="">Seleccione un cliente</option>
+                    </select>
+                  </div>
+                  <div class="campo">
+                    <label for="vehiculoOrden">Seleccionar Vehículo</label>
+                    <select id="vehiculoOrden" required>
+                      <option value="">Seleccione un vehículo</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grupo-formulario">
+                <h3>Información del Servicio</h3>
+                <div class="campos">
+                  <div class="campo">
+                    <label for="tipoServicio">Tipo de Servicio</label>
+                    <select id="tipoServicio" required>
+                      <option value="1">Preventivo</option>
+                      <option value="2">Reparación</option>
+                      <option value="3">Diagnóstico</option>
+                    </select>
+                  </div>
+                  <div class="campo">
+                    <label for="fechaEstimadaEntrega">Fecha Estimada de Entrega</label>
+                    <input type="date" id="fechaEstimadaEntrega" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grupo-formulario">
+                <h3>Descripción del Servicio</h3>
+                <div class="campos">
+                  <div class="campo full-width">
+                    <label for="descripcionProblema">Descripción del Problema/Servicio</label>
+                    <textarea id="descripcionProblema" rows="4" placeholder="Describa el problema o servicio requerido..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-actions">
+                <button type="submit" class="btn-guardar">
+                  <i class="fas fa-save"></i> Crear Orden
+                </button>
+                <button type="button" id="btnCancelarOrden" class="btn-cancelar">
+                  <i class="fas fa-times"></i> Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal para Nuevo Cliente -->
+  <div id="modalCliente" class="modal hidden">
+    <div class="modal-content">
+        <h2>Registrar Nuevo Cliente</h2>
+        <form id="formCliente">
+            <label for="nombreCliente">Nombre Completo</label>
+            <input type="text" id="nombreCliente" required>
+
+            <label for="telefonoCliente">Teléfono</label>
+            <input type="tel" id="telefonoCliente" required>
+
+            <label for="emailCliente">Email</label>
+            <input type="email" id="emailCliente"> <!-- CORREGIDO -->
+
+            <div class="modal-actions">
+                <button type="submit" class="btn-guardar">Guardar Cliente</button>
+                <button type="button" class="btn-cancelar cerrar-modal">Cancelar</button>
+            </div>
+          </form>
+      </div>
+  </div>
+
+  <!-- Modal para Nuevo Vehículo (ACTUALIZADO CON BOTÓN CERRAR) -->
+  <div id="modalVehiculo" class="modal hidden">
+    <div class="modal-content">
+      <h2>Registrar Vehículo</h2>
+      <form id="formVehiculo">
+          <div class="campo">
+              <label for="anioVehiculo">Año:</label>
+              <input type="number" id="anioVehiculo" name="año" required>
+          </div>
+          <div class="campo">
+              <label for="serieVehiculo">Número de Serie:</label>
+              <input type="text" id="serieVehiculo" name="numeroSerie" required>
+          </div>
+          <div class="campo">
+              <label for="kilometrajeVehiculo">Kilometraje:</label>
+              <input type="number" id="kilometrajeVehiculo" name="kilometraje" required>
+          </div>
+          <div class="campo">
+              <label for="clienteVehiculo">Cliente:</label>
+              <select id="clienteVehiculo" name="clienteId" required>
+                  <option value="">Seleccione un cliente</option>
+              </select>
+          </div>
+          <div class="campo">
+              <label for="modeloVehiculo">Modelo:</label>
+              <select id="modeloVehiculo" name="modeloId" required>
+                  <option value="">Seleccione un modelo</option>
+              </select>
+          </div>
+          <div class="modal-actions">
+            <button type="submit" class="btn-guardar">
+              <i class="fas fa-save"></i> Guardar Vehículo
+            </button>
+            <button type="button" class="btn-cancelar cerrar-modal">
+              <i class="fas fa-times"></i> Cancelar
+            </button>
+          </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/recepcionista.js"></script>
 </body>
 </html>
