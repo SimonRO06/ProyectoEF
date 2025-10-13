@@ -22,6 +22,47 @@ namespace Infrastructure.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Entities.Auditoria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Accion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Detalles")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("EntidadAfectada")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("FechaHora")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("RegistroAfectadoId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserMemberId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EntidadAfectada");
+
+                    b.HasIndex("FechaHora");
+
+                    b.HasIndex("UserMemberId");
+
+                    b.ToTable("Auditorias", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Auth.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -423,6 +464,17 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("vehicles", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Auditoria", b =>
+                {
+                    b.HasOne("Domain.Entities.Auth.UserMember", "UserMember")
+                        .WithMany("Auditorias")
+                        .HasForeignKey("UserMemberId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.Navigation("UserMember");
+                });
+
             modelBuilder.Entity("Domain.Entities.Auth.RefreshToken", b =>
                 {
                     b.HasOne("Domain.Entities.Auth.UserMember", "UserMember")
@@ -566,6 +618,8 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.Auth.UserMember", b =>
                 {
+                    b.Navigation("Auditorias");
+
                     b.Navigation("OrdenesServicios");
 
                     b.Navigation("RefreshTokens");

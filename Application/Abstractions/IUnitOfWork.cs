@@ -18,6 +18,8 @@ public interface IUnitOfWork
     ICitaRepository Citas { get; }
     IUserMemberService UserMembers { get; }
     IVehiculoRepository Vehiculos { get; }
+    IAuditoriaRepository Auditorias { get; }
+
     IUserMemberRolService UserMemberRoles { get; }
     IRolService Roles { get; }
     // Task<int> SaveAsync();
