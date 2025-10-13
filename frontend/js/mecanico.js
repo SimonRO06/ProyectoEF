@@ -21,14 +21,6 @@ class MecanicoApp {
             window.location.href = 'login.html';
             return;
         }
-
-        // Verificar que el usuario sea mecánico
-        const userRole = localStorage.getItem('userRole');
-        if (userRole !== 'Mecánico') {
-            alert('No tienes permisos para acceder a esta página');
-            window.location.href = 'login.html';
-            return;
-        }
     }
 
     loadUserInfo() {

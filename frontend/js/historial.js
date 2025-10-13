@@ -24,13 +24,6 @@ class HistorialApp {
             window.location.href = 'login.html';
             return;
         }
-
-        const userRole = localStorage.getItem('userRole');
-        if (userRole !== 'Mecánico') {
-            alert('No tienes permisos para acceder a esta página');
-            window.location.href = 'login.html';
-            return;
-        }
     }
 
     loadUserInfo() {

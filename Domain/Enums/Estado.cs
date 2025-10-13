@@ -2,7 +2,7 @@ namespace Domain.Enums;
 
 public enum Estado
 {
-    Pendiente,
-    EnProgreso,
-    Finalizado
+    Pendiente = 1,
+    EnProgreso = 2,
+    Finalizado = 3
 }
