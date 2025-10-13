@@ -165,18 +165,12 @@ Proporciona endpoints RESTful organizados por controlador:
 
 | Integrante | Rol / Responsabilidades |
 |------------|---------------------------|
-| 👨🏻‍💻 **Simón [Apellido]** | Encargado del **backend**, gestión de la lógica del servidor y conexión con la base de datos. |
-| 👩🏻‍💻 ​**Juliana [Apellido]** | Participó en el desarrollo de la parte de **configurations**, asegurando la correcta integración técnica del proyecto. |
-| 👩🏻‍💻​ **Ivanna [Apellido]** | Desarrolló parte del **frontend**, contribuyendo al diseño visual y la estructura de la interfaz. |
+| 👨🏻‍💻 **Simón Rubiano Ortiz** | Encargado del **backend**, gestión de la lógica del servidor y conexión con la base de datos. |
+| 👩🏻‍💻 ​**Juliana Andrea Pallares** | Participó en el desarrollo de la parte de **configurations**, asegurando la correcta integración técnica del proyecto. |
+| 👩🏻‍💻​ **Ivanaa Patermina Mercado** | Desarrolló parte del **frontend**, contribuyendo al diseño visual y la estructura de la interfaz. |
 | 👩🏻‍💻​ **Jhinet Daniela Pérez Tami** | Apoyé en el desarrollo de **interfaces**, manejo de **repositorios**, corrección de **errores** y realización de **pruebas en Insomnia** para validar las rutas del backend. |
 
 ---
 
-
-    📊 Resultado Esperado
-
-
-    ...
-    
 
 
