@@ -162,11 +162,15 @@ Proporciona endpoints RESTful organizados por controlador:
 
     👨🏻‍💻 Roles del Sistema 👩🏻‍💻
 
-Rol                             DESCRIPCION
-- Ivanaa Patermina Mercado
-- Juliana Andrea Pallares 
-- Simón Rubiano Ortiz
-- Jhinet Daniela Perez Tami
+
+| Integrante | Rol / Responsabilidades |
+|------------|---------------------------|
+| 👨🏻‍💻 **Simón [Apellido]** | Encargado del **backend**, gestión de la lógica del servidor y conexión con la base de datos. |
+| 👩🏻‍💻 ​**Juliana [Apellido]** | Participó en el desarrollo de la parte de **configurations**, asegurando la correcta integración técnica del proyecto. |
+| 👩🏻‍💻​ **Ivanna [Apellido]** | Desarrolló parte del **frontend**, contribuyendo al diseño visual y la estructura de la interfaz. |
+| 👩🏻‍💻​ **Jhinet Daniela Pérez Tami** | Apoyé en el desarrollo de **interfaces**, manejo de **repositorios**, corrección de **errores** y realización de **pruebas en Insomnia** para validar las rutas del backend. |
+
+---
 
 
     📊 Resultado Esperado
