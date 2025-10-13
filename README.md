@@ -141,14 +141,37 @@ Proporciona endpoints RESTful organizados por controlador:
 
 ## 🧩 Migraciones y Configuración
 
-1. Ejecutar las migraciones:
-   ```bash
-   dotnet ef database update
+    dotnet add Infrastructure package Microsoft.EntityFrameworkCore
+    dotnet add Infrastructure package Npgsql.EntityFrameworkCore.PostgreSQL
+
+    📦 Application (CQRS/Validación/Mapping)
+    bash
+    Copy code
+    dotnet add Application package MediatR
+    dotnet add Application package FluentValidation
+    dotnet add Application package AutoMapper
+    
+    📦 Api (DI + Swagger + Validación)
+    bash
+    Copy code
+    dotnet add Api package AutoMapper
+    dotnet add Api package AutoMapper.Extensions.Microsoft.DependencyInjection
+    dotnet add Api package FluentValidation.DependencyInjectionExtensions
+    dotnet add Api package Microsoft.EntityFrameworkCore.Design
+
+1. Levantar el contenedor: 
+
+    docker compose up -d 
+
+    - Crear la migración: 
+    
+    dotnet ef migrations add IniMig -p Infrastructure/ -s Api/ -o Data/Migrations
+
 
 2. Configurar conexión a MySQL en appsettings.json:
 
     "ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=AutoTallerDB;User=root;Password=tu_clave;"
+    "DefaultConnection": "Host=localhost;Port=5433;Database=proyectoef;Username=postgres;Password=postgres"
     }    FALTA ARREGLAR 
 
 3.  Iniciar el proyecto:
@@ -157,22 +180,17 @@ Proporciona endpoints RESTful organizados por controlador:
 
 4.  Acceder a Swagger UI:
 
-    http://localhost:5000/swagger
+    http://localhost:5000/api
 
 
     👨🏻‍💻 Roles del Sistema 👩🏻‍💻
 
-Rol                             DESCRIPCION
-- Ivanaa Patermina Mercado
-- Juliana Andrea Pallares 
-- Simón Rubiano Ortiz
-- Jhinet Daniela Perez Tami
+| Integrante | Rol / Responsabilidades |
+|------------|---------------------------|
+| 👨🏻‍💻​ **Simón Rubiano Ortiz** | Encargado del **backend**, gestión de la lógica del servidor y conexión con la base de datos. |
+| 👩🏻‍💻​ **Juliana Andrea Pallares** | Participó en el desarrollo de la parte de **configurations**, asegurando la correcta integración técnica del proyecto. |
+| 👩🏻‍💻​ **Ivanaa Patermina Mercado** | Desarrolló parte del **frontend**, contribuyendo al diseño visual y la estructura de la interfaz. |
+| 👩🏻‍💻​ **Jhinet Daniela Pérez Tami** | Apoyé en el desarrollo de **interfaces**, manejo de **repositorios**, corrección de **errores** y realización de **pruebas en Insomnia** para validar las rutas del backend. |
 
-
-    📊 Resultado Esperado
-
-
-    ...
-    
-
+---
 
