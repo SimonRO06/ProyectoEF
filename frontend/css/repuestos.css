@@ -268,3 +268,95 @@ td button i {
 .btn-cancelar:hover {
   background: #be123c;
 }
+/* Mejorar botones de acciones */
+.acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-editar, .btn-eliminar {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.btn-editar {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-eliminar {
+  background-color: #ef4444;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+/* Agregar al final de repuestos.css */
+
+/* Mejorar botones de acciones */
+.acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-editar, .btn-eliminar {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.btn-editar {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-eliminar {
+  background-color: #ef4444;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* Estados de stock */
+.stock-bajo {
+  color: #dc2626;
+  font-weight: 600;
+  background-color: #fef2f2;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.stock-normal {
+  color: #059669;
+  font-weight: 500;
+}

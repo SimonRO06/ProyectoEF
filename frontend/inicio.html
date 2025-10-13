@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - AutoTallerManager</title>
+  <link rel="stylesheet" href="css/inicio.css">
+  <script src="https://kit.fontawesome.com/a2e8c5f2c8.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <h2>AutoTaller<span>Manager</span></h2>
+        <nav>
+          <ul>
+            <li class="active"><i class="fas fa-home"></i> Inicio</li>
+            <li><a href="clientes.html"><i class="fas fa-users"></i> Clientes</a></li>
+            <li><a href="vehiculos.html"><i class="fas fa-car"></i> Vehículos</a></li>
+            <li><a href="repuestos.html"><i class="fas fa-tools"></i> Repuestos</a></li>
+            <li><a href="usuarios.html"><i class="fas fa-user-tie"></i> Empleados</a></li>
+          </ul>
+        </nav>
+      </div>
+      <button id="logoutBtn" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header>
+        <h1><i class="fas fa-home"></i> Dashboard Principal</h1>
+        <div class="user-info">
+          <span id="userName">Administrador</span>
+        </div>
+      </header>
+
+      <!-- Estadísticas Rápidas -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon clientes">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="totalClientes">0</h3>
+            <p>Total Clientes</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon vehiculos">
+            <i class="fas fa-car"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="totalVehiculos">0</h3>
+            <p>Vehículos Registrados</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon ordenes">
+            <i class="fas fa-clipboard-list"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="ordenesActivas">0</h3>
+            <p>Órdenes Activas</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon ingresos">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <div class="stat-info">
+            <h3 id="ingresosMes">$0</h3>
+            <p>Ingresos del Mes</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráficos y Tablas -->
+      <div class="dashboard-grid">
+        <!-- Órdenes Recientes -->
+        <div class="dashboard-card">
+          <h3><i class="fas fa-clock"></i> Órdenes Recientes</h3>
+          <div class="table-container">
+            <table id="tablaOrdenesRecientes">
+              <thead>
+                <tr>
+                  <th>Orden #</th>
+                  <th>Cliente</th>
+                  <th>Vehículo</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Se carga dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Repuestos con Stock Bajo -->
+        <div class="dashboard-card">
+          <h3><i class="fas fa-exclamation-triangle"></i> Stock Bajo</h3>
+          <div class="table-container">
+            <table id="tablaStockBajo">
+              <thead>
+                <tr>
+                  <th>Repuesto</th>
+                  <th>Stock Actual</th>
+                  <th>Stock Mínimo</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Se carga dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones Rápidas -->
+      <div class="quick-actions">
+        <h3>Acciones Rápidas</h3>
+        <div class="actions-grid">
+          <a href="clientes.html" class="action-card">
+            <i class="fas fa-user-plus"></i>
+            <span>Nuevo Cliente</span>
+          </a>
+          <a href="vehiculos.html" class="action-card">
+            <i class="fas fa-car-side"></i>
+            <span>Registrar Vehículo</span>
+          </a>
+          <a href="repuestos.html" class="action-card">
+            <i class="fas fa-box-open"></i>
+            <span>Gestionar Repuestos</span>
+          </a>
+          <a href="usuarios.html" class="action-card">
+            <i class="fas fa-user-plus"></i>
+            <span>Agregar Empleado</span>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src=""></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Usuarios - AutoTallerManager</title>
+  <title>Empleados - AutoTallerManager</title>
   <link rel="stylesheet" href="css/usuarios.css">
   <script src="https://kit.fontawesome.com/a2e8c5f2c8.js" crossorigin="anonymous"></script>
 </head>
@@ -15,11 +15,11 @@
         <h2>AutoTaller<span>Manager</span></h2>
         <nav>
           <ul>
-            <li class="active"><i class="fas fa-users"></i> Usuarios</li>
-            <li><a href="repuestos.html"><i class="fas fa-tools"></i> Repuestos</a></li>
+            <li><a href="inicio.html"></a><i class="fas fa-home"></a></i>Inicio</li>
+            <li><a href="clientes.html"><i class="fas fa-users"></i> Clientes</a></li>
             <li><a href="vehiculos.html"><i class="fas fa-car"></i> Vehículos</a></li>
-            <li><a href="facturas.html"><i class="fas fa-file-invoice"></i> Facturas</a></li>
-            <li><a href="ordenes.html"><i class="fas fa-clipboard-list"></i> Órdenes</a></li>
+            <li><a href="repuestos.html"><i class="fas fa-tools"></i> Repuestos</a></li>
+            <li class="active"><i class="fas fa-users"></i> Empleados</li>
           </ul>
         </nav>
       </div>
@@ -35,6 +35,14 @@
         <button id="btnAgregar" class="btn-agregar">
           <i class="fas fa-plus"></i> Nuevo Usuario
         </button>
+        <td class="acciones">
+        <button class="btn-editar" onclick="editarUsuario('${u.id || u._id}')" title="Editar Usuario">
+          <i class="fas fa-edit"></i> Editar
+        </button>
+        <button class="btn-eliminar" onclick="eliminarUsuario('${u.id || u._id}')" title="Eliminar Usuario">
+          <i class="fas fa-trash"></i> Eliminar
+        </button>
+      </td>
       </header>
 
       <div class="tabla-container">
