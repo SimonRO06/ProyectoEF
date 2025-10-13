@@ -107,6 +107,29 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Auditorias",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    EntidadAfectada = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Accion = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    FechaHora = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Detalles = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    RegistroAfectadoId = table.Column<int>(type: "integer", nullable: false),
+                    UserMemberId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Auditorias", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Auditorias_users_members_UserMemberId",
+                        column: x => x.UserMemberId,
+                        principalTable: "users_members",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "refreshtokens",
                 columns: table => new
                 {
@@ -310,6 +333,21 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Auditorias_EntidadAfectada",
+                table: "Auditorias",
+                column: "EntidadAfectada");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auditorias_FechaHora",
+                table: "Auditorias",
+                column: "FechaHora");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auditorias_UserMemberId",
+                table: "Auditorias",
+                column: "UserMemberId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_customers_Correo",
                 table: "customers",
                 column: "Correo",
@@ -396,6 +434,9 @@ namespace Infrastructure.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Auditorias");
+
             migrationBuilder.DropTable(
                 name: "meetings");
 

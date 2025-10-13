@@ -10,6 +10,7 @@ public class UserMember : BaseEntity
     public string Password { get; set; } = string.Empty;
     public string? Role { get; set; }
     public ICollection<Rol> Rols { get; set; } = new HashSet<Rol>();
+    public ICollection<Auditoria> Auditorias { get; set; } = new HashSet<Auditoria>();
     public ICollection<UserMemberRol> UserMemberRols { get; set; } = new HashSet<UserMemberRol>();
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();
     public virtual ICollection<OrdenServicio> OrdenesServicios { get; set; } = new HashSet<OrdenServicio>();

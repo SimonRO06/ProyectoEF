@@ -72,5 +72,10 @@ public class UserMemberConfiguration : IEntityTypeConfiguration<UserMember>
                 builder.HasMany(p => p.RefreshTokens)
                 .WithOne(p => p.UserMember)
                 .HasForeignKey(p => p.UserId);
+                
+                builder.HasMany(c => c.Auditorias)
+                .WithOne(c => c.UserMember)
+                .HasForeignKey(c => c.UserMemberId)
+                .OnDelete(DeleteBehavior.SetNull);
     }
 }

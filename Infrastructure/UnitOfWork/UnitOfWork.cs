@@ -24,6 +24,8 @@ public class UnitOfWork : IUnitOfWork
     private IVehiculoRepository? _vehiculoRepository;
     private IModeloRepository? _modeloRepository;
     private ICitaRepository? _citaRepository;
+    private IAuditoriaRepository? _auditoriaRepository;
+
     private IRolService? _rolService;
     public UnitOfWork(AppDbContext context)
     {
@@ -56,6 +58,7 @@ public class UnitOfWork : IUnitOfWork
     public IVehiculoRepository Vehiculos => _vehiculoRepository ??= new VehiculoRepository(_context);
     public IModeloRepository Modelos => _modeloRepository ??= new ModeloRepository(_context);
     public ICitaRepository Citas => _citaRepository ??= new CitaRepository(_context);
+    public IAuditoriaRepository Auditorias => _auditoriaRepository ??= new AuditoriaRepository(_context);
     public IUserMemberService UserMembers => _userMemberService ??= new UserMemberRepository(_context);
     public IRolService Roles => _rolService ??= new RolRepository(_context);
     public IUserMemberRolService UserMemberRoles => throw new NotImplementedException();
