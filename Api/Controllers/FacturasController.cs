@@ -44,12 +44,19 @@ public class FacturasController : BaseApiController
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateFacturaDto dto, CancellationToken ct)
     {
-        var invoices = new Factura(dto.FechaEmision, dto.Total, dto.OrdenServicioId);
-        await _repository.AddAsync(invoices, ct);
-        await _unitofwork.SaveChangesAsync(ct);
+        try
+        {
+            var invoices = new Factura(dto.FechaEmision, dto.Total, dto.OrdenServicioId);
+            await _repository.AddAsync(invoices, ct);
+            await _unitofwork.SaveChangesAsync(ct);
 
-        var created = new FacturaDto(invoices.Id, invoices.FechaEmision, invoices.Total!, invoices.OrdenServicioId!);
-        return CreatedAtAction(nameof(GetById), new { id = invoices.Id }, created);
+            var created = new FacturaDto(invoices.Id, invoices.FechaEmision, invoices.Total!, invoices.OrdenServicioId!);
+            return CreatedAtAction(nameof(GetById), new { id = invoices.Id }, created);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.InnerException?.Message ?? ex.Message);
+        }
     }
 
     [HttpPut("{id:guid}")]

@@ -19,7 +19,7 @@ public class Pago
 
     public Pago(DateTime fechaPago, decimal monto, MetodoPago metodoPago, Guid facturaId)
     {
-        FechaPago = fechaPago;
+        FechaPago = DateTime.SpecifyKind(fechaPago, DateTimeKind.Utc);;
         Monto = monto;
         MetodoPago = metodoPago;
         FacturaId = facturaId;

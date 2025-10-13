@@ -269,7 +269,7 @@ namespace Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    FechaEmision = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    FechaEmision = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Total = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     OrdenServicioId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
