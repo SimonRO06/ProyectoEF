@@ -79,3 +79,27 @@
     background-color: #95a5a6;
     cursor: not-allowed;
 }
+
+/* Link de registro */
+.signup-link {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #515966;
+}
+
+.signup-link p {
+    color: #fff;
+    font-size: 14px;
+}
+
+.signup-link a {
+    color: #04BD7D;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.signup-link a:hover {
+    color: #47bb7d;
+    text-decoration: underline;
+}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoTallerManager - Historial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/historial.css">
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div>
+                <h2>AutoTaller<span>Manager</span></h2>
+                <nav>
+                    <ul>
+                        <li><a href="mecanico.html"><i class="fas fa-tools"></i> Órdenes Activas</a></li>
+                        <li class="active"><i class="fas fa-history"></i> Historial</li>
+                    </ul>
+                </nav>
+            </div>
+            <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <h1><i class="fas fa-history"></i> Historial de Órdenes</h1>
+                <div class="user-info">
+                    <span id="userName">Mecánico</span>
+                </div>
+            </header>
+
+            <div class="filtros">
+                <select id="filtroEstado">
+                    <option value="">Todos los estados</option>
+                    <option value="Finalizado">Finalizadas</option>
+                    <option value="Cancelado">Canceladas</option>
+                </select>
+                <select id="filtroMes">
+                    <option value="">Todos los meses</option>
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+                <input type="number" id="filtroAnio" placeholder="Año" min="2020" max="2030">
+                <input type="text" id="filtroCliente" placeholder="Filtrar por cliente...">
+                <button id="btnBuscar" class="btn-actualizar">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+                <button id="btnExportar" class="btn-exportar">
+                    <i class="fas fa-file-export"></i> Exportar
+                </button>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon total">
+                        <i class="fas fa-list-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="countTotal">0</h3>
+                        <p>Total Órdenes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon finalizado">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="countFinalizado">0</h3>
+                        <p>Completadas</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon ingresos">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalIngresos">$0</h3>
+                        <p>Total Facturado</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon promedio">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="promedioTiempo">0d</h3>
+                        <p>Promedio por Orden</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tabla-container">
+                <table id="historialTable">
+                    <thead>
+                        <tr>
+                            <th>Orden #</th>
+                            <th>Cliente</th>
+                            <th>Vehículo</th>
+                            <th>Tipo Servicio</th>
+                            <th>Fecha Ingreso</th>
+                            <th>Fecha Finalización</th>
+                            <th>Duración</th>
+                            <th>Estado</th>
+                            <th>Total Factura</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historialBody">
+                        <!-- El historial se cargará aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <button id="btnPrev" class="btn-pagination" disabled>
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </button>
+                <span id="pageInfo">Página 1 de 1</span>
+                <button id="btnNext" class="btn-pagination" disabled>
+                    Siguiente <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para detalles completos -->
+    <div id="modalDetallesCompletos" class="modal hidden">
+        <div class="modal-content large">
+            <h2><i class="fas fa-clipboard-list"></i> Detalles Completos de Orden</h2>
+            
+            <div class="grid-2">
+                <div class="detalles-orden">
+                    <h3>Información de la Orden</h3>
+                    <div class="detalle-item">
+                        <label>Número de Orden:</label>
+                        <span id="detalleNumero">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Cliente:</label>
+                        <span id="detalleCliente">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Teléfono:</label>
+                        <span id="detalleTelefono">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Vehículo:</label>
+                        <span id="detalleVehiculo">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Kilometraje:</label>
+                        <span id="detalleKilometraje">-</span>
+                    </div>
+                </div>
+
+                <div class="detalles-servicio">
+                    <h3>Información del Servicio</h3>
+                    <div class="detalle-item">
+                        <label>Tipo de Servicio:</label>
+                        <span id="detalleTipoServicio">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Fecha Ingreso:</label>
+                        <span id="detalleFechaIngreso">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Fecha Finalización:</label>
+                        <span id="detalleFechaFinalizacion">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Duración Total:</label>
+                        <span id="detalleDuracion">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Estado:</label>
+                        <span id="detalleEstado">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notas-section">
+                <h3>Notas del Trabajo Realizado</h3>
+                <div id="detalleNotas" class="notas-content">
+                    <!-- Notas se cargarán aquí -->
+                </div>
+            </div>
+
+            <div class="repuestos-section">
+                <h3>Repuestos Utilizados</h3>
+                <div id="detalleRepuestos" class="repuestos-list">
+                    <!-- Repuestos se cargarán aquí -->
+                </div>
+            </div>
+
+            <div class="factura-section">
+                <h3>Información de Factura</h3>
+                <div class="grid-2">
+                    <div class="detalle-item">
+                        <label>Número de Factura:</label>
+                        <span id="detalleFacturaNumero">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Fecha de Emisión:</label>
+                        <span id="detalleFacturaFecha">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Total Factura:</label>
+                        <span id="detalleFacturaTotal">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <label>Estado de Pago:</label>
+                        <span id="detalleEstadoPago">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="btnCerrarDetalles" class="btn-cancelar">Cerrar</button>
+                <button id="btnImprimir" class="btn-imprimir">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/historial.js"></script>
+</body>
+</html>
