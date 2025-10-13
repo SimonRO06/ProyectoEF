@@ -21,7 +21,8 @@ const estado = {
         clientes: [],
         vehiculos: [],
         ordenes: [],
-        modelos: []
+        modelos: [],
+        usuarios: []
     }
 };
 
@@ -208,7 +209,8 @@ async function cargarDatosIniciales() {
             cargarClientes(),
             cargarVehiculos(),
             cargarOrdenes(),
-            cargarModelos()
+            cargarModelos(),
+            cargarUsuarios() // Agregar carga de usuarios
         ]);
         actualizarEstadisticas();
     } catch (error) {
@@ -228,7 +230,7 @@ async function cargarDatosSeccion(seccion) {
             await cargarOrdenes();
             break;
         case 'nueva-orden':
-            await cargarSelectClientes();
+            await cargarSelectUsuarios(); // Cambiar por usuarios
             await cargarSelectVehiculos();
             // Establecer fecha mínima como hoy
             const fechaInput = document.getElementById('fechaEstimadaEntrega');
@@ -494,7 +496,7 @@ function renderizarOrdenes(ordenes) {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>#${orden.id || 'N/A'}</td>
-            <td>${orden.vehiculo?.cliente?.nombre || '—'}</td>
+            <td>${orden.usuario?.nombre || orden.usuario?.userName || '—'}</td> <!-- Cambiar a usuario -->
             <td>${orden.vehiculo?.modelo?.nombre || orden.vehiculo?.modelo || '—'}</td>
             <td>${new Date(orden.fechaIngreso).toLocaleDateString()}</td>
             <td><span class="estado-badge estado-${getEstadoClase(orden.estado)}">${getEstadoTexto(orden.estado)}</span></td>
@@ -550,6 +552,44 @@ async function cargarSelectClientes() {
         selectOrden.appendChild(option.cloneNode(true));
         selectVehiculo.appendChild(option);
     });
+}
+
+async function cargarSelectUsuarios() {
+    const select = document.getElementById('usuarioOrden');
+    
+    if (!select) {
+        console.error("❌ Select de usuarios no encontrado");
+        return;
+    }
+    
+    // Mostrar estado de carga
+    select.innerHTML = '<option value="">Cargando usuarios...</option>';
+    select.disabled = true;
+
+    try {
+        const response = await fetch("http://localhost:5000/api/users/all");
+        if (!response.ok) throw new Error('Error al cargar usuarios');
+        
+        const usuarios = await response.json();
+        
+        // Limpiar y llenar el select
+        select.innerHTML = '<option value="">Seleccione un usuario</option>';
+        select.disabled = false;
+
+        usuarios.forEach(usuario => {
+            const option = document.createElement('option');
+            option.value = usuario.id;
+            // Mostrar información del usuario (ajusta según la estructura de tu objeto Usuario)
+            option.textContent = `${usuario.nombre || usuario.userName} - ${usuario.email || ''}`;
+            select.appendChild(option);
+        });
+        
+        console.log(`✅ ${usuarios.length} usuarios cargados en el select`);
+        
+    } catch (error) {
+        console.error('❌ Error cargando usuarios para orden:', error);
+        select.innerHTML = '<option value="">Error al cargar usuarios</option>';
+    }
 }
 
 async function cargarSelectVehiculos() {
@@ -883,10 +923,11 @@ async function crearOrden(e) {
     const tipoServicioSelect = document.getElementById('tipoServicio');
     const fechaEstimadaInput = document.getElementById('fechaEstimadaEntrega');
     const vehiculoSelect = document.getElementById('vehiculoOrden');
+    const usuarioSelect = document.getElementById('usuarioOrden'); // Cambiar cliente por usuario
     const descripcionTextarea = document.getElementById('descripcionProblema');
 
     // Verificar que los elementos existan
-    if (!tipoServicioSelect || !fechaEstimadaInput || !vehiculoSelect) {
+    if (!tipoServicioSelect || !fechaEstimadaInput || !vehiculoSelect || !usuarioSelect) {
         console.error("❌ Elementos del formulario no encontrados");
         alert("❌ Error en el formulario. Por favor recarga la página.");
         return;
@@ -894,6 +935,7 @@ async function crearOrden(e) {
 
     // Obtener valores
     const vehiculoId = vehiculoSelect.value;
+    const usuarioId = usuarioSelect.value; // Obtener ID del usuario
     const tipoServicio = parseInt(tipoServicioSelect.value);
     const fechaEstimadaEntrega = fechaEstimadaInput.value;
     const descripcionProblema = descripcionTextarea ? descripcionTextarea.value : "";
@@ -910,25 +952,40 @@ async function crearOrden(e) {
         return;
     }
 
+    if (!usuarioId) {
+        alert("❌ Por favor selecciona un usuario");
+        return;
+    }
+
     if (!fechaEstimadaEntrega) {
         alert("❌ Por favor selecciona una fecha estimada de entrega");
         return;
     }
 
+    // Formatear correctamente la fecha a YYYY-MM-DD
+    function formatearFechaISO(fechaString) {
+        const fecha = new Date(fechaString);
+        const año = fecha.getFullYear();
+        const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+        const dia = String(fecha.getDate()).padStart(2, '0');
+        return `${año}-${mes}-${dia}`;
+    }
+
     // Crear objeto de orden según tu entidad - Estado 0 = Pendiente
     const nuevaOrden = {
         tipoServicio: tipoServicio,
-        fechaIngreso: new Date().toISOString(),
-        fechaEstimadaEntrega: new Date(fechaEstimadaEntrega).toISOString(),
+        fechaIngreso: new Date().toISOString().split('T')[0], // Solo la fecha sin hora
+        fechaEstimadaEntrega: formatearFechaISO(fechaEstimadaEntrega),
         estado: 0, // Estado.Pendiente (según tu enum)
         vehiculoId: vehiculoId,
+        usuarioId: usuarioId, // Cambiar de clienteId a usuarioId
         descripcionProblema: descripcionProblema || "Sin descripción adicional"
     };
 
     console.log("📦 Datos de la orden a enviar:", nuevaOrden);
 
     try {
-        const response = await fetch(API_ORDENES, {
+        const response = await fetch("http://localhost:5000/api/ordenes", {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
@@ -940,7 +997,13 @@ async function crearOrden(e) {
         if (!response.ok) {
             const errorText = await response.text();
             console.error("❌ Error del servidor:", errorText);
-            throw new Error(errorText || 'Error al crear orden');
+            
+            if (errorText.includes("fecha") || errorText.includes("date")) {
+                alert("❌ Error en el formato de fecha. Por favor verifica la fecha ingresada.");
+            } else {
+                throw new Error(errorText || 'Error al crear orden');
+            }
+            return;
         }
 
         const resultado = await response.json();
@@ -961,6 +1024,24 @@ async function crearOrden(e) {
     } catch (error) {
         console.error('❌ Error creando orden:', error);
         alert('❌ Error al crear orden: ' + error.message);
+    }
+}
+
+async function cargarUsuarios() {
+    try {
+        console.log("🔄 Cargando usuarios...");
+        const res = await fetch("http://localhost:5000/api/users/all");
+        
+        if (!res.ok) {
+            throw new Error(`Error ${res.status}: ${res.statusText}`);
+        }
+        
+        const usuarios = await res.json();
+        console.log("👤 Usuarios cargados:", usuarios);
+
+        estado.datos.usuarios = usuarios;
+    } catch (error) {
+        console.error("❌ Error cargando usuarios:", error);
     }
 }
 
