@@ -8,10 +8,13 @@ using Application.Abstractions;
 using Application.Abstractions.Auth;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
+[SwaggerTag("Autenticación, registro y gestión de usuarios del sistema")]
 public class UsersController : BaseApiController
 {
     private readonly IUserService _userService;
@@ -26,33 +29,37 @@ public class UsersController : BaseApiController
     }
 
     [HttpGet("all")]
+    [SwaggerOperation(
+        Summary = "Obtener todos los usuarios",
+        Description = "Retorna una lista de todos los usuarios registrados en el sistema"
+    )]
+    [SwaggerResponse(200, "Lista de usuarios obtenida exitosamente", typeof(IEnumerable<UserMemberDto>))]
+    [SwaggerResponse(401, "No autorizado - Token JWT requerido")]
+    [SwaggerResponse(404, "No se encontraron usuarios")]
     public async Task<ActionResult<IEnumerable<UserMemberDto>>> GetAll(CancellationToken ct)
     {
         var usuarios = await _unitOfWork.UserMembers.GetAllAsync(ct);
 
-        // Depuración para ver qué datos estamos obteniendo
         if (usuarios == null || !usuarios.Any())
         {
             return NotFound("No se encontraron usuarios.");
-        }
-
-        // Mostrar los usuarios en el log para ver qué estamos obteniendo
-        Console.WriteLine($"Usuarios obtenidos: {usuarios.Count()}");
-
-        // Verifica si los usuarios contienen datos
-        foreach (var user in usuarios)
-        {
-            Console.WriteLine($"Usuario: {user.Username}, Email: {user.Email}");
         }
 
         var usuariosDto = _mapper.Map<IEnumerable<UserMemberDto>>(usuarios);
         return Ok(usuariosDto);
     }
 
-
-    // Registrar un nuevo usuario
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto registerDto, CancellationToken ct)
+    [SwaggerOperation(
+        Summary = "Registrar nuevo usuario",
+        Description = "Crea una nueva cuenta de usuario en el sistema con rol asignado"
+    )]
+    [SwaggerResponse(200, "Usuario registrado exitosamente")]
+    [SwaggerResponse(400, "Datos de usuario inválidos o email ya registrado")]
+    public async Task<IActionResult> Register(
+        [SwaggerParameter("Datos de registro del usuario", Required = true)]
+        [FromBody] RegisterDto registerDto, 
+        CancellationToken ct)
     {
         var result = await _userService.RegisterAsync(registerDto);
         if (result.Contains("Error") || result.Contains("ya se encuentra registrado"))
@@ -63,9 +70,17 @@ public class UsersController : BaseApiController
         return Ok(result);
     }
 
-    // Autenticar usuario (login)
     [HttpPost("login")]
-    public async Task<ActionResult<DataUserDto>> Login([FromBody] LoginDto loginDto, CancellationToken ct)
+    [SwaggerOperation(
+        Summary = "Iniciar sesión",
+        Description = "Autentica al usuario y retorna tokens JWT para acceder a los endpoints protegidos"
+    )]
+    [SwaggerResponse(200, "Login exitoso", typeof(DataUserDto))]
+    [SwaggerResponse(401, "Credenciales inválidas - Email o password incorrecto")]
+    public async Task<ActionResult<DataUserDto>> Login(
+        [SwaggerParameter("Credenciales de acceso", Required = true)]
+        [FromBody] LoginDto loginDto, 
+        CancellationToken ct)
     {
         var userDto = await _userService.GetTokenAsync(loginDto, ct);
         if (!userDto.IsAuthenticated)
@@ -76,9 +91,16 @@ public class UsersController : BaseApiController
         return Ok(userDto);
     }
 
-    // Refrescar el token usando el refresh token
     [HttpPost("refresh-token")]
-    public async Task<ActionResult<DataUserDto>> RefreshToken([FromBody] string refreshToken)
+    [SwaggerOperation(
+        Summary = "Renovar token de acceso",
+        Description = "Usa el refresh token para obtener un nuevo access token sin necesidad de login"
+    )]
+    [SwaggerResponse(200, "Token renovado exitosamente", typeof(DataUserDto))]
+    [SwaggerResponse(401, "Refresh token inválido o expirado")]
+    public async Task<ActionResult<DataUserDto>> RefreshToken(
+        [SwaggerParameter("Refresh token para renovar acceso", Required = true)]
+        [FromBody] string refreshToken)
     {
         var userDto = await _userService.RefreshTokenAsync(refreshToken);
         if (!userDto.IsAuthenticated)
@@ -89,9 +111,17 @@ public class UsersController : BaseApiController
         return Ok(userDto);
     }
 
-    // Obtener usuario por ID
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserMemberDto>> GetById(int id, CancellationToken ct)
+    [SwaggerOperation(
+        Summary = "Obtener usuario por ID",
+        Description = "Retorna la información de un usuario específico por su ID"
+    )]
+    [SwaggerResponse(200, "Usuario encontrado", typeof(UserMemberDto))]
+    [SwaggerResponse(404, "Usuario no encontrado")]
+    public async Task<ActionResult<UserMemberDto>> GetById(
+        [SwaggerParameter("ID del usuario", Required = true)]
+        int id, 
+        CancellationToken ct)
     {
         var user = await _userService.GetByIdAsync(id, ct);
         if (user == null)
@@ -103,9 +133,17 @@ public class UsersController : BaseApiController
         return Ok(dto);
     }
 
-    // Agregar un rol a un usuario
     [HttpPost("add-role")]
-    public async Task<IActionResult> AddRole([FromBody] AddRoleDto addRoleDto, CancellationToken ct)
+    [SwaggerOperation(
+        Summary = "Agregar rol a usuario",
+        Description = "Asigna un nuevo rol a un usuario existente en el sistema"
+    )]
+    [SwaggerResponse(200, "Rol agregado exitosamente")]
+    [SwaggerResponse(400, "Error al agregar el rol - Usuario o rol inválido")]
+    public async Task<IActionResult> AddRole(
+        [SwaggerParameter("Datos para asignar rol", Required = true)]
+        [FromBody] AddRoleDto addRoleDto, 
+        CancellationToken ct)
     {
         var result = await _userService.AddRoleAsync(addRoleDto);
         if (result.Contains("Error") || result.Contains("invalid"))
