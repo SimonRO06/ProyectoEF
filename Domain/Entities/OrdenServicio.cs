@@ -15,7 +15,6 @@ public class OrdenServicio
         public DateTime FechaIngreso { get; private set; } = DateTime.UtcNow;
         public DateTime FechaEstimadaEntrega { get; private set; }
         public Estado Estado { get; private set; }
-http://localhost:5000/api/ordenes
         public int UserMemberId { get; set; }
         public virtual UserMember? UserMember { get; set; }
         public Guid VehiculoId { get; set; }
