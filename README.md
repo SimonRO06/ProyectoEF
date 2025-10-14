@@ -180,7 +180,7 @@ Proporciona endpoints RESTful organizados por controlador:
 
 4.  Acceder a Swagger UI:
 
-    http://localhost:5000/api
+    http://localhost:5000/swagger/index.html
 
 
     👨🏻‍💻 Roles del Sistema 👩🏻‍💻
