@@ -170,9 +170,7 @@ Proporciona endpoints RESTful organizados por controlador:
 
 2. Configurar conexión a MySQL en appsettings.json:
 
-    "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5433;Database=proyectoef;Username=postgres;Password=postgres"
-    }    FALTA ARREGLAR 
+    dotnet ef database update -p Infrastructure/ -s Api/ --connection "Host=localhost;Port=5433;Database=proyectoef;Username=postgres;Password=postgres"
 
 3.  Iniciar el proyecto:
 
