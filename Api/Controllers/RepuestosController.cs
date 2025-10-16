@@ -3,11 +3,15 @@ using Api.Dtos.Repuestos;
 using Application.Abstractions;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
 namespace Api.Controllers;
 
+[Authorize]
+[ApiController]
+[Route("api/[controller]")]
 [EnableRateLimiting("ipLimiter")]
 public class RepuestosController : BaseApiController
 {
@@ -41,6 +45,7 @@ public class RepuestosController : BaseApiController
         return Ok(_mapper.Map<RepuestoDto>(repuesto));
     }
 
+    [Authorize(Policy = "AdminOnly")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateRepuestoDto dto, CancellationToken ct)
     {
@@ -52,6 +57,7 @@ public class RepuestosController : BaseApiController
         return CreatedAtAction(nameof(GetById), new { id = spare_parts.Id }, created);
     }
 
+    [Authorize(Policy = "AdminOnly")]
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateRepuestoDto dto, CancellationToken ct)
     {
@@ -67,6 +73,7 @@ public class RepuestosController : BaseApiController
         return NoContent();
     }
 
+    [Authorize(Policy = "AdminOnly")]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
     {

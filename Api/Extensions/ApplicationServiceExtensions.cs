@@ -126,60 +126,14 @@ public static class ApplicationServiceExtensions
         // Authorization – Policies específicas para el taller automotriz
         services.AddAuthorization(options =>
         {
-            // Políticas básicas por rol
-            options.AddPolicy("Administradores", policy =>
+            options.AddPolicy("AdminOnly", policy =>
                 policy.RequireRole("Administrador"));
-
-            options.AddPolicy("Mecanicos", policy =>
+            options.AddPolicy("MecanicoOnly", policy =>
                 policy.RequireRole("Mecanico"));
-
-            options.AddPolicy("Recepcionistas", policy =>
+            options.AddPolicy("RecepcionistaOnly", policy =>
                 policy.RequireRole("Recepcionista"));
-
-            // Políticas compuestas para funcionalidades específicas
-            options.AddPolicy("GestionClientes", policy =>
-                policy.RequireRole("Administrador", "Recepcionista"));
-
-            options.AddPolicy("GestionVehiculos", policy =>
-                policy.RequireRole("Administrador", "Recepcionista", "Mecanico"));
-
-            options.AddPolicy("GestionOrdenes", policy =>
-                policy.RequireRole("Administrador", "Recepcionista", "Mecanico"));
-
-            options.AddPolicy("CrearOrdenes", policy =>
-                policy.RequireRole("Administrador", "Recepcionista"));
-
-            options.AddPolicy("ActualizarOrdenes", policy =>
-                policy.RequireRole("Administrador", "Mecanico"));
-
-            options.AddPolicy("CerrarOrdenes", policy =>
-                policy.RequireRole("Administrador", "Mecanico"));
-
-            options.AddPolicy("GestionRepuestos", policy =>
-                policy.RequireRole("Administrador"));
-
-            options.AddPolicy("ConsultarRepuestos", policy =>
-                policy.RequireRole("Administrador", "Mecanico", "Recepcionista"));
-
-            options.AddPolicy("GenerarFacturas", policy =>
-                policy.RequireRole("Administrador", "Mecanico"));
-
-            options.AddPolicy("GestionUsuarios", policy =>
-                policy.RequireRole("Administrador"));
-
-            options.AddPolicy("VerAuditoria", policy =>
-                policy.RequireRole("Administrador"));
-
-            options.AddPolicy("DashboardCompleto", policy =>
-                policy.RequireRole("Administrador"));
-
-            // Política para reportes y consultas generales
-            options.AddPolicy("ConsultarReportes", policy =>
-                policy.RequireRole("Administrador", "Recepcionista"));
-
-            // Política para todo el personal del taller
-            options.AddPolicy("TodoPersonal", policy =>
-                policy.RequireRole("Administrador", "Mecanico", "Recepcionista"));
+            options.AddPolicy("StaffOnly", policy =>
+                policy.RequireRole("Mecanico", "Recepcionista"));
         });
     }
     public static void AddValidationErrors(this IServiceCollection services)

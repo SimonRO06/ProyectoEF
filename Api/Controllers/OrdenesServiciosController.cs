@@ -6,9 +6,13 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Api.Dtos.OrdenesServicios;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers;
 
+[Authorize(Roles = "Administrador,Mecanico")]
+[ApiController]  
+[Route("api/[controller]")]  
 [EnableRateLimiting("ipLimiter")]
 [SwaggerTag("Gestión de órdenes de servicio - Core del negocio del taller")]
 public class OrdenesServiciosController : BaseApiController

@@ -7,11 +7,13 @@ using Api.Services;
 using Application.Abstractions;
 using Application.Abstractions.Auth;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;
 
+[Authorize(Policy = "AdminOnly")]
 [Route("api/[controller]")]
 [ApiController]
 [SwaggerTag("Autenticación, registro y gestión de usuarios del sistema")]
@@ -49,6 +51,7 @@ public class UsersController : BaseApiController
         return Ok(usuariosDto);
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     [SwaggerOperation(
         Summary = "Registrar nuevo usuario",
@@ -70,6 +73,7 @@ public class UsersController : BaseApiController
         return Ok(result);
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     [SwaggerOperation(
         Summary = "Iniciar sesión",

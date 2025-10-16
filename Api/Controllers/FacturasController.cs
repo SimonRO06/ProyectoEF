@@ -3,11 +3,15 @@ using Api.Dtos.Facturas;
 using Application.Abstractions;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
 namespace Api.Controllers;
 
+[Authorize(Roles = "Administrador,Mecanico")]
+[ApiController]  
+[Route("api/[controller]")]  
 [EnableRateLimiting("ipLimiter")]
 public class FacturasController : BaseApiController
 {

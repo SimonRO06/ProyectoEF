@@ -3,12 +3,16 @@ using Api.Dtos.Vehiculos;
 using Application.Abstractions;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;
 
+[Authorize(Policy = "RecepcionistaOnly")]
+[ApiController]
+[Route("api/[controller]")]
 [EnableRateLimiting("ipLimiter")]
 [SwaggerTag("Gestión de vehículos de clientes del taller")]
 public class VehiculosController : BaseApiController
